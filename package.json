@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
+    "@babel/eslint-parser": "^7.25.1",
     "@babel/runtime": "^7.6.2",
     "@expo/webpack-config": "^0.12.40",
     "@react-native/babel-preset": "0.80.2",

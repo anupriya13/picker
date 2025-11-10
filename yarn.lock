@@ -5330,6 +5330,7 @@ __metadata:
   resolution: "@react-native-picker/picker@workspace:."
   dependencies:
     "@babel/core": "npm:^7.6.2"
+    "@babel/eslint-parser": "npm:^7.25.1"
     "@babel/runtime": "npm:^7.6.2"
     "@expo/webpack-config": "npm:^0.12.40"
     "@react-native/babel-preset": "npm:0.80.2"
