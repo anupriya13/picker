@@ -6,13 +6,9 @@
 #if __has_include("codegen/NativePickerDataTypes.g.h")
   #include "codegen/NativePickerDataTypes.g.h"
 #endif
-#include "codegen/NativePickerSpec.g.h"
+#include "codegen/react/components/rnpicker/RNCPickerWindows.g.h"
 
 #include "NativeModules.h"
-
-#ifdef RNW_NEW_ARCH
-#include "../ReactNativePicker/codegen/react/components/rnpicker/RNCPickerWindows.g.h"
-#endif
 
 namespace winrt::Picker
 {
@@ -33,44 +29,5 @@ struct Picker
 private:
   React::ReactContext m_context;
 };
-
-#ifdef RNW_NEW_ARCH
-// Fabric component implementation
-struct PickerUserData : winrt::implements<PickerUserData, winrt::IInspectable>,
-                         ReactNativePicker::BaseRNCPickerWindows<PickerUserData> {
-
-  PickerUserData(const winrt::Microsoft::ReactNative::Composition::ICompositionContext& compContext)
-      : m_compContext(compContext) {}
-
-  void UpdateProps(
-      const winrt::Microsoft::ReactNative::ComponentView &view,
-      const winrt::com_ptr<ReactNativePicker::RNCPickerWindowsProps> &newProps,
-      const winrt::com_ptr<ReactNativePicker::RNCPickerWindowsProps> &oldProps) noexcept override;
-
-  void UpdateLayoutMetrics(
-      const winrt::Microsoft::ReactNative::ComponentView &view,
-      const winrt::Microsoft::ReactNative::LayoutMetrics &newLayoutMetrics,
-      const winrt::Microsoft::ReactNative::LayoutMetrics &oldLayoutMetrics) noexcept override;
-
-  void Initialize(const winrt::Microsoft::ReactNative::ComponentView &view) noexcept override;
-
-  winrt::Microsoft::UI::Composition::Visual CreateVisual(
-      const winrt::Microsoft::ReactNative::ComponentView &view) noexcept override;
-
-  void FinalizeUpdate(
-      const winrt::Microsoft::ReactNative::ComponentView &view,
-      winrt::Microsoft::ReactNative::ComponentViewUpdateMask mask) noexcept override;
-
-  void HandleSetNativeSelectedIndexCommand(int32_t selectedIndex) noexcept override;
-
-  static void RegisterComponent(
-      const winrt::Microsoft::ReactNative::IReactPackageBuilder &packageBuilder) noexcept;
-
-private:
-  winrt::Microsoft::ReactNative::Composition::ICompositionContext m_compContext{nullptr};
-  winrt::Microsoft::UI::Composition::SpriteVisual m_visual{nullptr};
-  winrt::Microsoft::UI::Composition::CompositionBrush m_brush{nullptr};
-};
-#endif
 
 } // namespace winrt::Picker

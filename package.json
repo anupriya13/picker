@@ -183,7 +183,7 @@
       "generators": [
         "componentsWindows"
       ],
-      "outputDirectory": "windows/ReactNativePicker/codegen",
+      "outputDirectory": "windows/Picker/codegen",
       "separateDataTypes": true
     }
   },
