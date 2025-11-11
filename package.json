@@ -179,7 +179,7 @@
       }
     },
     "windows": {
-      "namespace": "ReactNativePicker",
+      "namespace": "Picker",
       "generators": [
         "componentsWindows"
       ],
