@@ -10,9 +10,7 @@
 
 #include "NativeModules.h"
 
-#ifdef RNW_NEW_ARCH
 #include "codegen/react/components/rnpicker/RNCPickerWindows.g.h"
-#endif
 
 namespace winrt::Picker
 {
@@ -34,7 +32,6 @@ private:
   React::ReactContext m_context;
 };
 
-#ifdef RNW_NEW_ARCH
 // Fabric component implementation for RNCPickerWindows
 struct PickerUserData : winrt::implements<PickerUserData, winrt::IInspectable>,
                          ReactNativePicker::BaseRNCPickerWindows<PickerUserData> {
@@ -71,6 +68,5 @@ private:
   winrt::Microsoft::UI::Composition::SpriteVisual m_visual{nullptr};
   winrt::Microsoft::UI::Composition::CompositionBrush m_brush{nullptr};
 };
-#endif
 
 } // namespace winrt::Picker

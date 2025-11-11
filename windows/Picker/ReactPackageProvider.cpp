@@ -17,9 +17,7 @@ void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuil
   AddAttributedModules(packageBuilder, true);
   
   // Register Fabric component for new architecture
-#ifdef RNW_NEW_ARCH
   PickerUserData::RegisterComponent(packageBuilder);
-#endif
 }
 
 } // namespace winrt::Picker::implementation

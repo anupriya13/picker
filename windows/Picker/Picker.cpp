@@ -15,7 +15,6 @@ double Picker::multiply(double a, double b) noexcept {
   return a * b;
 }
 
-#ifdef RNW_NEW_ARCH
 // Fabric component stub implementations for RNCPickerWindows
 
 void PickerUserData::UpdateProps(
@@ -87,6 +86,5 @@ void PickerUserData::RegisterComponent(
                 });
         });
 }
-#endif
 
 } // namespace winrt::Picker
