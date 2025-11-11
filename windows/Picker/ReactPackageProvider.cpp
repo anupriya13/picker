@@ -1,18 +1,20 @@
 #include "pch.h"
+
 #include "ReactPackageProvider.h"
 #if __has_include("ReactPackageProvider.g.cpp")
 #include "ReactPackageProvider.g.cpp"
 #endif
-#include "ReactPickerViewManager.h"
+
+#include "Picker.h"
 
 using namespace winrt::Microsoft::ReactNative;
 
-namespace winrt::ReactNativePicker::implementation
+namespace winrt::Picker::implementation
 {
 
 void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
 {
-    packageBuilder.AddViewManager(L"ReactPickerViewManager", []() { return winrt::make<ReactPickerViewManager>(); });
+  AddAttributedModules(packageBuilder, true);
 }
 
-} // namespace winrt::ReactNativePicker::implementation
+} // namespace winrt::Picker::implementation

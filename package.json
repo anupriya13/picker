@@ -73,12 +73,12 @@
     "pretty-quick": "^2.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-native": "0.80.2",
+    "react-native": "0.80.0",
     "react-native-builder-bob": "^0.20.0",
     "react-native-macos": "^0.79",
     "react-native-test-app": "^5.0.1",
     "react-native-web": "^0.14.10",
-    "react-native-windows": "^0.80",
+    "react-native-windows": "0.80.0",
     "react-test-renderer": "19.2.0",
     "rimraf": "^2.6.3",
     "semantic-release": "^19.0.3",
@@ -177,10 +177,22 @@
       "componentProvider": {
         "RNCPicker": "RNCPickerComponentView"
       }
+    },
+    "windows": {
+      "namespace": "PickerCodegen",
+      "outputDirectory": "windows/Picker/codegen",
+      "separateDataTypes": true
     }
   },
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "react-native-windows": {
+    "init-windows": {
+      "name": "Picker",
+      "namespace": "Picker",
+      "template": "cpp-lib"
+    }
+  }
 }
