@@ -34,15 +34,15 @@ private:
 
 // Fabric component implementation for RNCPickerWindows
 struct PickerUserData : winrt::implements<PickerUserData, winrt::IInspectable>,
-                         ReactNativePicker::BaseRNCPickerWindows<PickerUserData> {
+                         ::Picker::BaseRNCPickerWindows<PickerUserData> {
 
   PickerUserData(const winrt::Microsoft::ReactNative::Composition::ICompositionContext& compContext)
       : m_compContext(compContext) {}
 
   void UpdateProps(
       const winrt::Microsoft::ReactNative::ComponentView &view,
-      const winrt::com_ptr<ReactNativePicker::RNCPickerWindowsProps> &newProps,
-      const winrt::com_ptr<ReactNativePicker::RNCPickerWindowsProps> &oldProps) noexcept override;
+      const winrt::com_ptr<::Picker::RNCPickerWindowsProps> &newProps,
+      const winrt::com_ptr<::Picker::RNCPickerWindowsProps> &oldProps) noexcept override;
 
   void UpdateLayoutMetrics(
       const winrt::Microsoft::ReactNative::ComponentView &view,

@@ -19,8 +19,8 @@ double Picker::multiply(double a, double b) noexcept {
 
 void PickerUserData::UpdateProps(
     const winrt::Microsoft::ReactNative::ComponentView &view,
-    const winrt::com_ptr<ReactNativePicker::RNCPickerWindowsProps> &newProps,
-    const winrt::com_ptr<ReactNativePicker::RNCPickerWindowsProps> &oldProps) noexcept {
+    const winrt::com_ptr<::Picker::RNCPickerWindowsProps> &newProps,
+    const winrt::com_ptr<::Picker::RNCPickerWindowsProps> &oldProps) noexcept {
   
     // Call base implementation
     BaseRNCPickerWindows::UpdateProps(view, newProps, oldProps);
@@ -76,7 +76,7 @@ void PickerUserData::HandleSetNativeSelectedIndexCommand(int32_t selectedIndex) 
 void PickerUserData::RegisterComponent(
     const winrt::Microsoft::ReactNative::IReactPackageBuilder &packageBuilder) noexcept {
   
-    ReactNativePicker::RegisterRNCPickerWindowsNativeComponent<PickerUserData>(
+    ::Picker::RegisterRNCPickerWindowsNativeComponent<PickerUserData>(
         packageBuilder,
         [](const winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder &builder) noexcept {
             builder.CreateUserData(
