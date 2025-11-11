@@ -168,7 +168,7 @@
   ],
   "codegenConfig": {
     "name": "rnpicker",
-    "type": "components",
+    "type": "all",
     "jsSrcsDir": "./js",
     "android": {
       "javaPackageName": "com.reactnativecommunity.picker"
@@ -179,7 +179,10 @@
       }
     },
     "windows": {
-      "namespace": "PickerCodegen",
+      "namespace": "Picker",
+      "generators": [
+        "componentsWindows"
+      ],
       "outputDirectory": "windows/Picker/codegen",
       "separateDataTypes": true
     }

@@ -15,6 +15,9 @@ namespace winrt::Picker::implementation
 void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
 {
   AddAttributedModules(packageBuilder, true);
+  
+  // Register Fabric component for new architecture
+  PickerUserData::RegisterComponent(packageBuilder);
 }
 
 } // namespace winrt::Picker::implementation
