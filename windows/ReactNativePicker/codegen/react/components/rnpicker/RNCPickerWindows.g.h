@@ -1,6 +1,6 @@
 
 /*
- * This file is auto-generated from RNCPickerNativeComponent spec file in flow / TypeScript.
+ * This file is auto-generated from RNCPickerWindowsNativeComponent spec file in flow / TypeScript.
  */
 // clang-format off
 #pragma once
@@ -18,10 +18,10 @@
 
 namespace ReactNativePicker {
 
-REACT_STRUCT(RNCPickerSpec_RNCPickerProps_items)
-struct RNCPickerSpec_RNCPickerProps_items {
+REACT_STRUCT(RNCPickerWindowsSpec_RNCPickerWindowsProps_items)
+struct RNCPickerWindowsSpec_RNCPickerWindowsProps_items {
   REACT_FIELD(label)
-  winrt::Microsoft::ReactNative::JSValue label{nullptr};
+  std::string label;
 
   REACT_FIELD(value)
   winrt::Microsoft::ReactNative::JSValue value{nullptr};
@@ -33,10 +33,10 @@ struct RNCPickerSpec_RNCPickerProps_items {
   std::optional<std::string> testID;
 };
 
-REACT_STRUCT(RNCPickerSpec_RNCPickerProps_fakeProp)
-struct RNCPickerSpec_RNCPickerProps_fakeProp {
+REACT_STRUCT(RNCPickerWindowsSpec_RNCPickerWindowsProps_fakeProp)
+struct RNCPickerWindowsSpec_RNCPickerWindowsProps_fakeProp {
   REACT_FIELD(label)
-  winrt::Microsoft::ReactNative::JSValue label{nullptr};
+  std::string label;
 
   REACT_FIELD(value)
   winrt::Microsoft::ReactNative::JSValue value{nullptr};
@@ -48,25 +48,19 @@ struct RNCPickerSpec_RNCPickerProps_fakeProp {
   std::optional<std::string> testID;
 };
 
-REACT_STRUCT(RNCPickerProps)
-struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::ReactNative::IComponentProps> {
-  RNCPickerProps(winrt::Microsoft::ReactNative::ViewProps props, const winrt::Microsoft::ReactNative::IComponentProps& cloneFrom)
+REACT_STRUCT(RNCPickerWindowsProps)
+struct RNCPickerWindowsProps : winrt::implements<RNCPickerWindowsProps, winrt::Microsoft::ReactNative::IComponentProps> {
+  RNCPickerWindowsProps(winrt::Microsoft::ReactNative::ViewProps props, const winrt::Microsoft::ReactNative::IComponentProps& cloneFrom)
     : ViewProps(props)
   {
      if (cloneFrom) {
-       auto cloneFromProps = cloneFrom.as<RNCPickerProps>();
+       auto cloneFromProps = cloneFrom.as<RNCPickerWindowsProps>();
        items = cloneFromProps->items;
        selectedIndex = cloneFromProps->selectedIndex;
-       selectionColor = cloneFromProps->selectionColor;
-       color = cloneFromProps->color;
-       textAlign = cloneFromProps->textAlign;
-       numberOfLines = cloneFromProps->numberOfLines;
-       fontSize = cloneFromProps->fontSize;
-       fontWeight = cloneFromProps->fontWeight;
-       fontStyle = cloneFromProps->fontStyle;
-       fontFamily = cloneFromProps->fontFamily;
+       enabled = cloneFromProps->enabled;
+       placeholder = cloneFromProps->placeholder;
        testID = cloneFromProps->testID;
-       themeVariant = cloneFromProps->themeVariant;
+       accessibilityLabel = cloneFromProps->accessibilityLabel;
        fakeProp = cloneFromProps->fakeProp;  
      }
   }
@@ -76,61 +70,46 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
   }
 
   REACT_FIELD(items)
-  std::vector<RNCPickerSpec_RNCPickerProps_items> items;
+  std::vector<RNCPickerWindowsSpec_RNCPickerWindowsProps_items> items;
 
   REACT_FIELD(selectedIndex)
   int32_t selectedIndex{};
 
-  REACT_FIELD(selectionColor)
-  winrt::Microsoft::ReactNative::Color selectionColor{nullptr};
+  REACT_FIELD(enabled)
+  std::optional<bool> enabled{};
 
-  REACT_FIELD(color)
-  winrt::Microsoft::ReactNative::Color color{nullptr};
-
-  REACT_FIELD(textAlign)
-  std::optional<std::string> textAlign;
-
-  REACT_FIELD(numberOfLines)
-  std::optional<int32_t> numberOfLines{};
-
-  REACT_FIELD(fontSize)
-  std::optional<int32_t> fontSize{};
-
-  REACT_FIELD(fontWeight)
-  std::optional<std::string> fontWeight;
-
-  REACT_FIELD(fontStyle)
-  std::optional<std::string> fontStyle;
-
-  REACT_FIELD(fontFamily)
-  std::optional<std::string> fontFamily;
+  REACT_FIELD(placeholder)
+  std::optional<std::string> placeholder;
 
   REACT_FIELD(testID)
   std::optional<std::string> testID;
 
-  REACT_FIELD(themeVariant)
-  std::optional<std::string> themeVariant;
+  REACT_FIELD(accessibilityLabel)
+  std::optional<std::string> accessibilityLabel;
 
   REACT_FIELD(fakeProp)
-  std::optional<RNCPickerSpec_RNCPickerProps_fakeProp> fakeProp;
+  std::optional<RNCPickerWindowsSpec_RNCPickerWindowsProps_fakeProp> fakeProp;
 
   const winrt::Microsoft::ReactNative::ViewProps ViewProps;
 };
 
-REACT_STRUCT(RNCPicker_OnChange)
-struct RNCPicker_OnChange {
-  REACT_FIELD(newValue)
-  winrt::Microsoft::ReactNative::JSValue newValue{nullptr};
+REACT_STRUCT(RNCPickerWindows_OnChange)
+struct RNCPickerWindows_OnChange {
+  REACT_FIELD(value)
+  winrt::Microsoft::ReactNative::JSValue value{nullptr};
 
-  REACT_FIELD(newIndex)
-  int32_t newIndex{};
+  REACT_FIELD(itemIndex)
+  int32_t itemIndex{};
+
+  REACT_FIELD(text)
+  std::string text;
 };
 
-struct RNCPickerEventEmitter {
-  RNCPickerEventEmitter(const winrt::Microsoft::ReactNative::EventEmitter &eventEmitter)
+struct RNCPickerWindowsEventEmitter {
+  RNCPickerWindowsEventEmitter(const winrt::Microsoft::ReactNative::EventEmitter &eventEmitter)
       : m_eventEmitter(eventEmitter) {}
 
-  using OnChange = RNCPicker_OnChange;
+  using OnChange = RNCPickerWindows_OnChange;
 
   void onChange(OnChange &value) const {
     m_eventEmitter.DispatchEvent(L"change", [value](const winrt::Microsoft::ReactNative::IJSValueWriter writer) {
@@ -143,12 +122,12 @@ struct RNCPickerEventEmitter {
 };
 
 template<typename TUserData>
-struct BaseRNCPicker {
+struct BaseRNCPickerWindows {
 
   virtual void UpdateProps(
     const winrt::Microsoft::ReactNative::ComponentView &/*view*/,
-    const winrt::com_ptr<RNCPickerProps> &newProps,
-    const winrt::com_ptr<RNCPickerProps> &/*oldProps*/) noexcept {
+    const winrt::com_ptr<RNCPickerWindowsProps> &newProps,
+    const winrt::com_ptr<RNCPickerWindowsProps> &/*oldProps*/) noexcept {
     m_props = newProps;
   }
 
@@ -165,7 +144,7 @@ struct BaseRNCPicker {
     const winrt::Microsoft::ReactNative::IComponentState &/*newState*/) noexcept {
   }
 
-  virtual void UpdateEventEmitter(const std::shared_ptr<RNCPickerEventEmitter> &eventEmitter) noexcept {
+  virtual void UpdateEventEmitter(const std::shared_ptr<RNCPickerWindowsEventEmitter> &eventEmitter) noexcept {
     m_eventEmitter = eventEmitter;
   }
 
@@ -207,32 +186,32 @@ struct BaseRNCPicker {
     }
   }
 
-  const std::shared_ptr<RNCPickerEventEmitter>& EventEmitter() const { return m_eventEmitter; }
-  const winrt::com_ptr<RNCPickerProps>& Props() const { return m_props; }
+  const std::shared_ptr<RNCPickerWindowsEventEmitter>& EventEmitter() const { return m_eventEmitter; }
+  const winrt::com_ptr<RNCPickerWindowsProps>& Props() const { return m_props; }
 
 private:
-  winrt::com_ptr<RNCPickerProps> m_props;
-  std::shared_ptr<RNCPickerEventEmitter> m_eventEmitter;
+  winrt::com_ptr<RNCPickerWindowsProps> m_props;
+  std::shared_ptr<RNCPickerWindowsEventEmitter> m_eventEmitter;
 };
 
 template <typename TUserData>
-void RegisterRNCPickerNativeComponent(
+void RegisterRNCPickerWindowsNativeComponent(
     winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder,
     std::function<void(const winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder&)> builderCallback) noexcept {
   packageBuilder.as<winrt::Microsoft::ReactNative::IReactPackageBuilderFabric>().AddViewComponent(
-      L"RNCPicker", [builderCallback](winrt::Microsoft::ReactNative::IReactViewComponentBuilder const &builder) noexcept {
+      L"RNCPickerWindows", [builderCallback](winrt::Microsoft::ReactNative::IReactViewComponentBuilder const &builder) noexcept {
         auto compBuilder = builder.as<winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder>();
 
         builder.SetCreateProps([](winrt::Microsoft::ReactNative::ViewProps props,
                               const winrt::Microsoft::ReactNative::IComponentProps& cloneFrom) noexcept {
-            return winrt::make<RNCPickerProps>(props, cloneFrom); 
+            return winrt::make<RNCPickerWindowsProps>(props, cloneFrom); 
         });
 
         builder.SetUpdatePropsHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
                                      const winrt::Microsoft::ReactNative::IComponentProps &newProps,
                                      const winrt::Microsoft::ReactNative::IComponentProps &oldProps) noexcept {
             auto userData = view.UserData().as<TUserData>();
-            userData->UpdateProps(view, newProps ? newProps.as<RNCPickerProps>() : nullptr, oldProps ? oldProps.as<RNCPickerProps>() : nullptr);
+            userData->UpdateProps(view, newProps ? newProps.as<RNCPickerWindowsProps>() : nullptr, oldProps ? oldProps.as<RNCPickerWindowsProps>() : nullptr);
         });
 
         compBuilder.SetUpdateLayoutMetricsHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
@@ -245,10 +224,10 @@ void RegisterRNCPickerNativeComponent(
         builder.SetUpdateEventEmitterHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
                                      const winrt::Microsoft::ReactNative::EventEmitter &eventEmitter) noexcept {
           auto userData = view.UserData().as<TUserData>();
-          userData->UpdateEventEmitter(std::make_shared<RNCPickerEventEmitter>(eventEmitter));
+          userData->UpdateEventEmitter(std::make_shared<RNCPickerWindowsEventEmitter>(eventEmitter));
         });
 
-        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::FinalizeUpdate != &BaseRNCPicker<TUserData>::FinalizeUpdate) {
+        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::FinalizeUpdate != &BaseRNCPickerWindows<TUserData>::FinalizeUpdate) {
             builder.SetFinalizeUpdateHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
                                      winrt::Microsoft::ReactNative::ComponentViewUpdateMask mask) noexcept {
             auto userData = view.UserData().as<TUserData>();
@@ -256,7 +235,7 @@ void RegisterRNCPickerNativeComponent(
           });
         } 
 
-        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::UpdateState != &BaseRNCPicker<TUserData>::UpdateState) {
+        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::UpdateState != &BaseRNCPickerWindows<TUserData>::UpdateState) {
           builder.SetUpdateStateHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
                                      const winrt::Microsoft::ReactNative::IComponentState &newState) noexcept {
             auto userData = view.UserData().as<TUserData>();
@@ -270,7 +249,7 @@ void RegisterRNCPickerNativeComponent(
           userData->HandleCommand(view, args);
         });
 
-        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::MountChildComponentView != &BaseRNCPicker<TUserData>::MountChildComponentView) {
+        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::MountChildComponentView != &BaseRNCPickerWindows<TUserData>::MountChildComponentView) {
           builder.SetMountChildComponentViewHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
                                       const winrt::Microsoft::ReactNative::MountChildComponentViewArgs &args) noexcept {
             auto userData = view.UserData().as<TUserData>();
@@ -278,7 +257,7 @@ void RegisterRNCPickerNativeComponent(
           });
         }
 
-        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::UnmountChildComponentView != &BaseRNCPicker<TUserData>::UnmountChildComponentView) {
+        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::UnmountChildComponentView != &BaseRNCPickerWindows<TUserData>::UnmountChildComponentView) {
           builder.SetUnmountChildComponentViewHandler([](const winrt::Microsoft::ReactNative::ComponentView &view,
                                       const winrt::Microsoft::ReactNative::UnmountChildComponentViewArgs &args) noexcept {
             auto userData = view.UserData().as<TUserData>();
@@ -288,13 +267,13 @@ void RegisterRNCPickerNativeComponent(
 
         compBuilder.SetViewComponentViewInitializer([](const winrt::Microsoft::ReactNative::ComponentView &view) noexcept {
           auto userData = winrt::make_self<TUserData>();
-          if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::Initialize != &BaseRNCPicker<TUserData>::Initialize) {
+          if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::Initialize != &BaseRNCPickerWindows<TUserData>::Initialize) {
             userData->Initialize(view);
           }
           view.UserData(*userData);
         });
 
-        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::CreateVisual != &BaseRNCPicker<TUserData>::CreateVisual) {
+        if CONSTEXPR_SUPPORTED_ON_VIRTUAL_FN_ADDRESS (&TUserData::CreateVisual != &BaseRNCPickerWindows<TUserData>::CreateVisual) {
           compBuilder.SetCreateVisualHandler([](const winrt::Microsoft::ReactNative::ComponentView &view) noexcept {
             auto userData = view.UserData().as<TUserData>();
             return userData->CreateVisual(view);
