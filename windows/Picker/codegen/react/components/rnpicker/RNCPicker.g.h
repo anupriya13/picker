@@ -33,21 +33,6 @@ struct RNCPickerSpec_RNCPickerProps_items {
   std::optional<std::string> testID;
 };
 
-REACT_STRUCT(RNCPickerSpec_RNCPickerProps_fakeProp)
-struct RNCPickerSpec_RNCPickerProps_fakeProp {
-  REACT_FIELD(label)
-  winrt::Microsoft::ReactNative::JSValue label{nullptr};
-
-  REACT_FIELD(value)
-  winrt::Microsoft::ReactNative::JSValue value{nullptr};
-
-  REACT_FIELD(textColor)
-  winrt::Microsoft::ReactNative::Color textColor{nullptr};
-
-  REACT_FIELD(testID)
-  std::optional<std::string> testID;
-};
-
 REACT_STRUCT(RNCPickerProps)
 struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::ReactNative::IComponentProps> {
   RNCPickerProps(winrt::Microsoft::ReactNative::ViewProps props, const winrt::Microsoft::ReactNative::IComponentProps& cloneFrom)
@@ -66,8 +51,7 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
        fontStyle = cloneFromProps->fontStyle;
        fontFamily = cloneFromProps->fontFamily;
        testID = cloneFromProps->testID;
-       themeVariant = cloneFromProps->themeVariant;
-       fakeProp = cloneFromProps->fakeProp;  
+       themeVariant = cloneFromProps->themeVariant;  
      }
   }
 
@@ -110,9 +94,6 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
 
   REACT_FIELD(themeVariant)
   std::optional<std::string> themeVariant;
-
-  REACT_FIELD(fakeProp)
-  std::optional<RNCPickerSpec_RNCPickerProps_fakeProp> fakeProp;
 
   const winrt::Microsoft::ReactNative::ViewProps ViewProps;
 };

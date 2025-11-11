@@ -33,21 +33,6 @@ struct RNCPickerWindowsSpec_RNCPickerWindowsProps_items {
   std::optional<std::string> testID;
 };
 
-REACT_STRUCT(RNCPickerWindowsSpec_RNCPickerWindowsProps_fakeProp)
-struct RNCPickerWindowsSpec_RNCPickerWindowsProps_fakeProp {
-  REACT_FIELD(label)
-  std::string label;
-
-  REACT_FIELD(value)
-  winrt::Microsoft::ReactNative::JSValue value{nullptr};
-
-  REACT_FIELD(textColor)
-  winrt::Microsoft::ReactNative::Color textColor{nullptr};
-
-  REACT_FIELD(testID)
-  std::optional<std::string> testID;
-};
-
 REACT_STRUCT(RNCPickerWindowsProps)
 struct RNCPickerWindowsProps : winrt::implements<RNCPickerWindowsProps, winrt::Microsoft::ReactNative::IComponentProps> {
   RNCPickerWindowsProps(winrt::Microsoft::ReactNative::ViewProps props, const winrt::Microsoft::ReactNative::IComponentProps& cloneFrom)
@@ -60,8 +45,7 @@ struct RNCPickerWindowsProps : winrt::implements<RNCPickerWindowsProps, winrt::M
        enabled = cloneFromProps->enabled;
        placeholder = cloneFromProps->placeholder;
        testID = cloneFromProps->testID;
-       accessibilityLabel = cloneFromProps->accessibilityLabel;
-       fakeProp = cloneFromProps->fakeProp;  
+       accessibilityLabel = cloneFromProps->accessibilityLabel;  
      }
   }
 
@@ -87,35 +71,12 @@ struct RNCPickerWindowsProps : winrt::implements<RNCPickerWindowsProps, winrt::M
   REACT_FIELD(accessibilityLabel)
   std::optional<std::string> accessibilityLabel;
 
-  REACT_FIELD(fakeProp)
-  std::optional<RNCPickerWindowsSpec_RNCPickerWindowsProps_fakeProp> fakeProp;
-
   const winrt::Microsoft::ReactNative::ViewProps ViewProps;
-};
-
-REACT_STRUCT(RNCPickerWindows_OnChange)
-struct RNCPickerWindows_OnChange {
-  REACT_FIELD(value)
-  winrt::Microsoft::ReactNative::JSValue value{nullptr};
-
-  REACT_FIELD(itemIndex)
-  int32_t itemIndex{};
-
-  REACT_FIELD(text)
-  std::string text;
 };
 
 struct RNCPickerWindowsEventEmitter {
   RNCPickerWindowsEventEmitter(const winrt::Microsoft::ReactNative::EventEmitter &eventEmitter)
       : m_eventEmitter(eventEmitter) {}
-
-  using OnChange = RNCPickerWindows_OnChange;
-
-  void onChange(OnChange &value) const {
-    m_eventEmitter.DispatchEvent(L"change", [value](const winrt::Microsoft::ReactNative::IJSValueWriter writer) {
-      winrt::Microsoft::ReactNative::WriteValue(writer, value);
-    });
-  }
 
  private:
   winrt::Microsoft::ReactNative::EventEmitter m_eventEmitter{nullptr};

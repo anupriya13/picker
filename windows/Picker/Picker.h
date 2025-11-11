@@ -6,10 +6,10 @@
 #if __has_include("codegen/NativePickerDataTypes.g.h")
   #include "codegen/NativePickerDataTypes.g.h"
 #endif
-#include "codegen/NativePickerSpec.g.h"
+//#include "codegen/NativePickerSpec.g.h"
 
 #include "NativeModules.h"
-
+//#include "codegen/react/components/rnpicker/RNCPicker.g.h"
 #include "codegen/react/components/rnpicker/RNCPickerWindows.g.h"
 
 namespace winrt::Picker
@@ -20,8 +20,6 @@ namespace winrt::Picker
 REACT_MODULE(Picker)
 struct Picker
 {
-  using ModuleSpec = PickerCodegen::PickerSpec;
-
   REACT_INIT(Initialize)
   void Initialize(React::ReactContext const &reactContext) noexcept;
 
@@ -36,8 +34,7 @@ private:
 struct PickerUserData : winrt::implements<PickerUserData, winrt::IInspectable>,
                          ::Picker::BaseRNCPickerWindows<PickerUserData> {
 
-  PickerUserData(const winrt::Microsoft::ReactNative::Composition::ICompositionContext& compContext)
-      : m_compContext(compContext) {}
+  PickerUserData() = default;
 
   void UpdateProps(
       const winrt::Microsoft::ReactNative::ComponentView &view,
@@ -64,7 +61,6 @@ struct PickerUserData : winrt::implements<PickerUserData, winrt::IInspectable>,
       const winrt::Microsoft::ReactNative::IReactPackageBuilder &packageBuilder) noexcept;
 
 private:
-  winrt::Microsoft::ReactNative::Composition::ICompositionContext m_compContext{nullptr};
   winrt::Microsoft::UI::Composition::SpriteVisual m_visual{nullptr};
   winrt::Microsoft::UI::Composition::CompositionBrush m_brush{nullptr};
 };

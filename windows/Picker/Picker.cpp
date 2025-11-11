@@ -79,11 +79,9 @@ void PickerUserData::RegisterComponent(
     ::Picker::RegisterRNCPickerWindowsNativeComponent<PickerUserData>(
         packageBuilder,
         [](const winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder &builder) noexcept {
-            builder.CreateUserData(
-                [](const winrt::Microsoft::ReactNative::IReactContext &,
-                   const winrt::Microsoft::ReactNative::Composition::ICompositionContext &compContext) noexcept {
-                    return winrt::make<PickerUserData>(compContext);
-                });
+            builder.SetViewComponentViewInitializer([](const winrt::Microsoft::ReactNative::Composition::ViewComponentViewInitializer &init) {
+                // no-op here; builder customization can be done by caller
+            });
         });
 }
 

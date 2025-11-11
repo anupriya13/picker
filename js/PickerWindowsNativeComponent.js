@@ -38,7 +38,7 @@ export type NativeProps = $ReadOnly<{|
   ...ViewProps,
   items: $ReadOnlyArray<PickerWindowsItemType>,
   selectedIndex: Int32,
-  onChange: BubblingEventHandler<PickerWindowsChangeEvent>,
+  // onChange: BubblingEventHandler<PickerWindowsChangeEvent>,
   enabled?: ?boolean,
   placeholder?: ?string,
   testID?: ?string,
@@ -47,7 +47,7 @@ export type NativeProps = $ReadOnly<{|
   // TODO: for some reason codegen does not create `fromRawValue` inline functions for
   // objects inside the `ReadOnlyArray` of items, so we need to explicitly define a prop
   // with this object so those functions are generated
-  fakeProp?: PickerWindowsItemType,
+  // fakeProp?: PickerWindowsItemType,
 |}>;
 
 type ComponentType = HostComponent<NativeProps>;
