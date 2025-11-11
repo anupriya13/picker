@@ -16,7 +16,7 @@
 
 #ifdef RNW_NEW_ARCH
 
-namespace ReactNativePicker {
+namespace Picker {
 
 REACT_STRUCT(RNCPickerWindowsSpec_RNCPickerWindowsProps_items)
 struct RNCPickerWindowsSpec_RNCPickerWindowsProps_items {
@@ -287,6 +287,6 @@ void RegisterRNCPickerWindowsNativeComponent(
       });
 }
 
-} // namespace ReactNativePicker
+} // namespace Picker
 
 #endif // #ifdef RNW_NEW_ARCH
