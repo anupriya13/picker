@@ -180,7 +180,9 @@
     },
     "windows": {
       "namespace": "ReactNativePicker",
-      "generators": ["componentsWindows"],
+      "generators": [
+        "componentsWindows"
+      ],
       "outputDirectory": "windows/ReactNativePicker/codegen"
     }
   },
