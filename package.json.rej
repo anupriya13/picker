@@ -1,0 +1,50 @@
+diff a/package.json b/package.json	(rejected hunks)
+@@ -71,12 +71,12 @@
+     "pretty-quick": "^2.0.1",
+     "react": "18.3.1",
+     "react-dom": "18.3.1",
+-    "react-native": "0.76.3",
++    "react-native": "0.77.0",
+     "react-native-builder-bob": "^0.20.0",
+     "react-native-macos": "^0.75",
+     "react-native-test-app": "^4.0.4",
+     "react-native-web": "^0.14.10",
+-    "react-native-windows": "^0.76",
++    "react-native-windows": "0.77.0",
+     "react-test-renderer": "18.2.0",
+     "rimraf": "^2.6.3",
+     "semantic-release": "^19.0.3",
+@@ -166,7 +166,7 @@
+   ],
+   "codegenConfig": {
+     "name": "rnpicker",
+-    "type": "components",
++    "type": "all",
+     "jsSrcsDir": "./js",
+     "android": {
+       "javaPackageName": "com.reactnativecommunity.picker"
+@@ -175,10 +175,23 @@
+       "componentProvider": {
+         "RNCPicker": "RNCPickerComponentView"
+       }
++    },
++    "windows": {
++      "namespace": "ReactNativePickerCodegen",
++      "outputDirectory": "windows/ReactNativePicker/codegen",
++      "separateDataTypes": true,
++	  "generators": "componentsWindows"
+     }
+   },
+   "workspaces": [
+     "example"
+   ],
+-  "packageManager": "yarn@4.1.1"
++  "packageManager": "yarn@4.1.1",
++  "react-native-windows": {
++    "init-windows": {
++      "name": "ReactNativePicker",
++      "namespace": "ReactNativePicker",
++      "template": "cpp-lib"
++    }
++  }
+ }

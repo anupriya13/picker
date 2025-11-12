@@ -1,0 +1,55 @@
+diff a/FabricExample/package.json b/FabricExample/package.json	(rejected hunks)
+@@ -7,25 +7,29 @@
+     "ios": "react-native run-ios",
+     "lint": "eslint .",
+     "start": "react-native start",
+-    "test": "jest"
++    "test": "jest",
++    "windows": "npx @react-native-community/cli run-windows",
++    "test:windows": "jest --config jest.config.windows.js"
+   },
+   "dependencies": {
+     "@react-native-picker/picker": "link:../",
+-    "react": "18.3.1",
+-    "react-native": "0.76.0"
++    "react": "19.1.0",
++    "react-native": "0.81.0-nightly-20250604-1a6d466f1",
++    "react-native-windows": "0.0.0-canary.998"
+   },
+   "devDependencies": {
+     "@babel/core": "^7.25.2",
+     "@babel/preset-env": "^7.25.3",
+-    "@babel/runtime": "^7.25.0",
+-    "@react-native-community/cli": "15.0.0-alpha.2",
+-    "@react-native-community/cli-platform-android": "15.0.0-alpha.2",
+-    "@react-native-community/cli-platform-ios": "15.0.0-alpha.2",
++    "@babel/runtime": "^7.28.4",
++    "@react-native-community/cli": "17.0.0",
++    "@react-native-community/cli-platform-android": "17.0.0",
++    "@react-native-community/cli-platform-ios": "17.0.0",
+     "@react-native/babel-preset": "0.76.0",
+     "@react-native/eslint-config": "0.76.0",
+     "@react-native/metro-config": "0.76.0",
+     "@react-native/typescript-config": "0.76.0",
+-    "@types/react": "^18.2.6",
++    "@rnx-kit/jest-preset": "^0.1.17",
++    "@types/react": "^19.1.0",
+     "@types/react-test-renderer": "^18.0.0",
+     "babel-jest": "^29.6.3",
+     "eslint": "^8.19.0",
+@@ -36,5 +40,15 @@
+   },
+   "engines": {
+     "node": ">=18"
++  },
++  "react-native-windows": {
++    "init-windows": {
++      "name": "FabricExample",
++      "namespace": "FabricExample",
++      "template": "cpp-app"
++    }
++  },
++  "resolutions": {
++    "react-native-windows": "portal:/D:/react-native-windows/vnext"
+   }
+ }

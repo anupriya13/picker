@@ -1,0 +1,26 @@
+diff a/windows/ReactNativePicker/ReactPackageProvider.h b/windows/ReactNativePicker/ReactPackageProvider.h	(rejected hunks)
+@@ -1,16 +1,19 @@
+ #pragma once
++
+ #include "ReactPackageProvider.g.h"
+ 
+ using namespace winrt::Microsoft::ReactNative;
+ 
+ namespace winrt::ReactNativePicker::implementation
+ {
+-    struct ReactPackageProvider : ReactPackageProviderT<ReactPackageProvider>
+-    {
+-        ReactPackageProvider() = default;
+ 
+-        void CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept;
+-    };
++struct ReactPackageProvider : ReactPackageProviderT<ReactPackageProvider>
++{
++  ReactPackageProvider() = default;
++
++  void CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept;
++};
++
+ } // namespace winrt::ReactNativePicker::implementation
+ 
+ namespace winrt::ReactNativePicker::factory_implementation

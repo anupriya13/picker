@@ -1,0 +1,26 @@
+diff a/js/RNCPickerNativeComponent.js b/js/RNCPickerNativeComponent.js	(rejected hunks)
+@@ -23,14 +23,19 @@ import type {ProcessedColorValue} from 'react-native/Libraries/StyleSheet/proces
+ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
+ import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
+ 
+-type PickerIOSChangeEvent = $ReadOnly<{|
+-  newValue: UnsafeMixed,
++//type PickerIOSChangeEvent = $ReadOnly<{|
++//  newValue: UnsafeMixed,
++//  newIndex: Int32,
++//|}>;
++
++type PickerIOSChangeEvent = $ReadOnly<{
++  newValue: string | number | boolean | null | void,
+   newIndex: Int32,
+-|}>;
++}>;
+ 
+ type RNCPickerIOSTypeItemType = $ReadOnly<{|
+-  label: ?UnsafeMixed,
+-  value: ?UnsafeMixed,
++  label: ?string,
++  value: ?string,
+   textColor: ?ColorValue,
+   testID: ?string,
+ |}>;
