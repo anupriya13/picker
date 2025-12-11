@@ -21,6 +21,8 @@
     "validate:flow": "flow check",
     "validate:typescript": "tsc --project ./",
     "test:jest": "jest js/",
+    "windows": "npx @react-native-community/cli run-windows",
+    "test:windows": "jest --config jest.config.windows.js",
     "test:detox:android:test:debug": "detox test -c android.emu.debug",
     "test:detox:android:test:release": "detox test -c android.emu.release",
     "test:detox:android:build:debug": "detox build -c android.emu.debug",
@@ -166,8 +168,8 @@
   ],
   "codegenConfig": {
     "name": "rnpicker",
-    "type": "components",
-    "jsSrcsDir": "./js",
+    "type": "all",
+    "jsSrcsDir": "js",
     "android": {
       "javaPackageName": "com.reactnativecommunity.picker"
     },
@@ -175,10 +177,23 @@
       "componentProvider": {
         "RNCPicker": "RNCPickerComponentView"
       }
+    },
+    "windows": {
+      "namespace": "PickerCodegen",
+      "outputDirectory": "windows/Picker/codegen",
+      "separateDataTypes": true,
+      "componentsWindows": true
     }
   },
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "react-native-windows": {
+    "init-windows": {
+      "name": "Picker",
+      "namespace": "Picker",
+      "template": "cpp-lib"
+    }
+  }
 }

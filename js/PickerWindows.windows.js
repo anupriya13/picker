@@ -33,7 +33,7 @@ type PickerWindowsProps = $ReadOnly<{|
   prompt?: string,
   placeholder?: ?string,
   testID?: string,
-  onChange?: (event: IPickerChangeEvent) => void,
+  onChange?: (event: PickerWindowsChangeEvent) => void,
   onValueChange?: (value: any, itemIndex: number, text: string) => void,
   accessibilityLabel?: ?string,
   // Editable support

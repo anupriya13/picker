@@ -14,14 +14,15 @@
     "mkdist": "node -e \"require('node:fs').mkdirSync('dist', { recursive: true, mode: 0o755 })\"",
     "start": "react-native start",
     "test": "jest",
-    "windows": "react-native run-windows"
+    "windows": "npx @react-native-community/cli run-windows",
+    "test:windows": "jest --config jest.config.windows.js"
   },
   "dependencies": {
     "@react-native-picker/picker": "workspace:^",
     "react": "18.3.1",
     "react-native": "0.76.3",
     "react-native-macos": "^0.75.0",
-    "react-native-windows": "^0.76.0"
+    "react-native-windows": "0.76.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -34,6 +35,7 @@
     "@react-native/eslint-config": "0.76.3",
     "@react-native/metro-config": "0.76.3",
     "@react-native/typescript-config": "0.76.3",
+    "@rnx-kit/jest-preset": "^0.1.17",
     "@rnx-kit/metro-config": "^2.0.0",
     "@types/react": "^18.2.6",
     "@types/react-test-renderer": "^18.0.0",
@@ -47,5 +49,12 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "react-native-windows": {
+    "init-windows": {
+      "name": "PickerExample",
+      "namespace": "PickerExample",
+      "template": "cpp-app"
+    }
   }
 }
