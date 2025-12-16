@@ -7,7 +7,6 @@
 
 #ifdef RNW_NEW_ARCH
 
-#include "codegen/NativePickerModuleDataTypes.g.h"
 #include "codegen/NativePickerModuleSpec.g.h"
 
 #include <winrt/Microsoft.ReactNative.h>
