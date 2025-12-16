@@ -10,7 +10,7 @@ namespace winrt::Picker::implementation {
 void RegisterRNCPickerComponentView(
   winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
 #ifdef RNW_NEW_ARCH
-  PickerCodegen::RegisterRNCPickerComponentView<winrt::Picker::implementation::RNCPickerComponentView>(
+  PickerCodegen::RegisterRNCPickerNativeComponent<winrt::Picker::implementation::RNCPickerComponentView>(
     packageBuilder,
     [](const winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder &builder) {
       builder.as<winrt::Microsoft::ReactNative::IReactViewComponentBuilder>().XamlSupport(true);
@@ -69,16 +69,16 @@ void RNCPickerComponentView::InitializeContentIsland(
   });
 
   // Listen for selection changes
-  m_selectionChangedToken = comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
+  comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
     if (m_updating) {
       return;
     }
 
     if (auto eventEmitter = this->EventEmitter()) {
-      auto comboBox = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-      int32_t selectedIndex = comboBox.SelectedIndex();
+      auto cb = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
+      int32_t selectedIndex = cb.SelectedIndex();
 
-      PickerCodegen::Picker_OnChange eventArgs;
+      PickerCodegen::RNCPicker_OnChange eventArgs;
       eventArgs.itemIndex = selectedIndex;
       
       // Get the selected item value if available
@@ -99,20 +99,16 @@ void RNCPickerComponentView::InitializeContentIsland(
 
 void RNCPickerComponentView::UpdateProps(
   const winrt::Microsoft::ReactNative::ComponentView &view,
-  const winrt::com_ptr<PickerCodegen::PickerProps> &newProps,
-  const winrt::com_ptr<PickerCodegen::PickerProps> &oldProps) noexcept {
-  BasePicker::UpdateProps(view, newProps, oldProps);
+  const winrt::com_ptr<PickerCodegen::RNCPickerProps> &newProps,
+  const winrt::com_ptr<PickerCodegen::RNCPickerProps> &oldProps) noexcept {
+  BaseRNCPicker::UpdateProps(view, newProps, oldProps);
   
   auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
   
   m_updating = true;
 
   // Update enabled state
-  if (newProps->enabled.has_value()) {
-    comboBox.IsEnabled(newProps->enabled.value());
-  } else {
-    comboBox.IsEnabled(true);
-  }
+  comboBox.IsEnabled(newProps->enabled);
 
   // Update placeholder text
   if (newProps->placeholder.has_value()) {
@@ -120,11 +116,10 @@ void RNCPickerComponentView::UpdateProps(
   }
 
   // Update items
-  if (newProps->items.has_value()) {
-    comboBox.Items().Clear();
-    m_items.clear();
-    
-    for (const auto& item : newProps->items.value()) {
+  comboBox.Items().Clear();
+  m_items.clear();
+  
+  for (const auto& item : newProps->items) {
       // Store item data
       m_items.push_back(item);
       
@@ -137,21 +132,15 @@ void RNCPickerComponentView::UpdateProps(
         comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
       }
       
-      comboBox.Items().Append(comboBoxItem);
-    }
+    comboBox.Items().Append(comboBoxItem);
   }
 
   // Update selected index
-  if (newProps->selectedIndex.has_value()) {
-    int32_t selectedIndex = static_cast<int32_t>(newProps->selectedIndex.value());
+  {
+    int32_t selectedIndex = newProps->selectedIndex;
     if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(comboBox.Items().Size())) {
       comboBox.SelectedIndex(selectedIndex);
     }
-  }
-
-  // Update accessibilityLabel (using Name property)
-  if (newProps->accessibilityLabel.has_value()) {
-    comboBox.Name(winrt::to_hstring(newProps->accessibilityLabel.value()));
   }
 
   m_updating = false;

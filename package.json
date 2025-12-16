@@ -167,7 +167,7 @@
     "dist/"
   ],
   "codegenConfig": {
-    "name": "rnpicker",
+    "name": "RNCPickerSpec",
     "type": "all",
     "jsSrcsDir": "src",
     "android": {
@@ -182,6 +182,7 @@
       "namespace": "PickerCodegen",
       "outputDirectory": "windows/Picker/codegen",
       "separateDataTypes": true,
+      "modulesWindows": true,
       "componentsWindows": true
     }
   },

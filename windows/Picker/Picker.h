@@ -22,11 +22,6 @@ struct Picker
 
 private:
   React::ReactContext m_context;
-  
-#ifdef RNW_NEW_ARCH
-  winrt::Microsoft::UI::Xaml::Controls::ContentDialog m_contentDialog{nullptr};
-  winrt::Microsoft::UI::Xaml::Controls::ComboBox m_comboBox{nullptr};
-#endif
 };
 
 } // namespace winrt::Picker
