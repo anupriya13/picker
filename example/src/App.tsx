@@ -35,8 +35,9 @@ export default function App() {
           <Text>{I18nManager.isRTL ? 'RTL' : 'LTR'}</Text>
         </View>
         <View style={styles.container}>
-          <Text style={styles.heading}>Picker Examples</Text>
-          {PickerExamples.examples.map((element) => (
+         {Platform.OS === 'android' && (<Text style={styles.heading}>Picker Examples</Text>)}
+         {Platform.OS === 'android' && 
+         PickerExamples.examples.map((element) => (
             <View style={styles.elementContainer} key={element.title}>
               <Text style={styles.title}> {element.title} </Text>
               {element.render()}
