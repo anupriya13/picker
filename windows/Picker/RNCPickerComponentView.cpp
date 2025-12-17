@@ -144,7 +144,7 @@ void RNCPickerComponentView::InitializeContentIsland(
       auto comboBox = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
       int32_t selectedIndex = comboBox.SelectedIndex();
 
-      PickerCodegen::RNCPicker_OnChange eventArgs;
+      PickerCodegen::RNCPicker_OnPickerSelect eventArgs;
       eventArgs.itemIndex = selectedIndex;
       
       // Get the selected item value if available
@@ -153,7 +153,7 @@ void RNCPickerComponentView::InitializeContentIsland(
         eventArgs.text = m_items[selectedIndex].label;
       }
       
-      eventEmitter->onChange(eventArgs);
+      eventEmitter->onPickerSelect(eventArgs);
     }
   });
 

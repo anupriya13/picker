@@ -11,7 +11,7 @@ import type { ViewProps, ColorValue, HostComponent } from 'react-native';
 import type { 
   Int32,
   WithDefault,
-  DirectEventHandler 
+  BubblingEventHandler 
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 /**
@@ -100,11 +100,11 @@ export interface RNCPickerProps extends ViewProps {
    * Accessibility label for the picker.
    */
   accessibilityLabel?: string;
-  
+
   /**
    * Callback when the selected item changes.
    */
-  onChange?: DirectEventHandler<RNCPickerChangeEvent>;
+  onPickerSelect?: BubblingEventHandler<RNCPickerChangeEvent>;
 }
 
 export default codegenNativeComponent<RNCPickerProps>('RNCPicker') as HostComponent<RNCPickerProps>;

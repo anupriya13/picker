@@ -77,8 +77,8 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
   const winrt::Microsoft::ReactNative::ViewProps ViewProps;
 };
 
-REACT_STRUCT(RNCPicker_OnChange)
-struct RNCPicker_OnChange {
+REACT_STRUCT(RNCPicker_OnPickerSelect)
+struct RNCPicker_OnPickerSelect {
   REACT_FIELD(value)
   std::string value;
 
@@ -93,10 +93,10 @@ struct RNCPickerEventEmitter {
   RNCPickerEventEmitter(const winrt::Microsoft::ReactNative::EventEmitter &eventEmitter)
       : m_eventEmitter(eventEmitter) {}
 
-  using OnChange = RNCPicker_OnChange;
+  using OnPickerSelect = RNCPicker_OnPickerSelect;
 
-  void onChange(OnChange &value) const {
-    m_eventEmitter.DispatchEvent(L"change", [value](const winrt::Microsoft::ReactNative::IJSValueWriter writer) {
+  void onPickerSelect(OnPickerSelect &value) const {
+    m_eventEmitter.DispatchEvent(L"pickerSelect", [value](const winrt::Microsoft::ReactNative::IJSValueWriter writer) {
       winrt::Microsoft::ReactNative::WriteValue(writer, value);
     });
   }

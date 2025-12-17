@@ -7,6 +7,8 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "PickerExample.Package", "Pi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PickerExample", "PickerExample\PickerExample.vcxproj", "{5D4306D5-0296-46C1-827F-2FF74C2FA6B8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Picker", "..\..\windows\Picker\Picker.vcxproj", "{170F439F-1AC2-40F6-94D2-FB6511EDF052}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -53,6 +55,18 @@ Global
 		{5D4306D5-0296-46C1-827F-2FF74C2FA6B8}.Release|ARM64.ActiveCfg = Release|ARM64
 		{5D4306D5-0296-46C1-827F-2FF74C2FA6B8}.Release|ARM64.Build.0 = Release|ARM64
 		{5D4306D5-0296-46C1-827F-2FF74C2FA6B8}.Release|ARM64.Deploy.0 = Release|ARM64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Debug|x64.ActiveCfg = Debug|x64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Debug|x64.Build.0 = Debug|x64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Debug|x86.ActiveCfg = Debug|Win32
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Debug|x86.Build.0 = Debug|Win32
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Debug|ARM64.Build.0 = Debug|ARM64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Release|x64.ActiveCfg = Release|x64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Release|x64.Build.0 = Release|x64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Release|x86.ActiveCfg = Release|Win32
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Release|x86.Build.0 = Release|Win32
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Release|ARM64.ActiveCfg = Release|ARM64
+		{170F439F-1AC2-40F6-94D2-FB6511EDF052}.Release|ARM64.Build.0 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
