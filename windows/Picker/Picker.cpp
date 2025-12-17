@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Picker.h"
+#include "RNCPickerComponentView.h"
 
 namespace winrt::Picker
 {
@@ -17,15 +18,19 @@ double Picker::multiply(double a, double b) noexcept {
 }
 
 bool Picker::openPicker() noexcept {
-  // Opening picker programmatically is not currently supported on Windows
-  // The picker opens when the user clicks on the ComboBox
+#ifdef RNW_NEW_ARCH
+  return winrt::Picker::implementation::RNCPickerComponentView::OpenPicker();
+#else
   return false;
+#endif
 }
 
 bool Picker::closePicker() noexcept {
-  // Closing picker programmatically is not currently supported on Windows
-  // The picker closes when the user makes a selection or clicks outside
+#ifdef RNW_NEW_ARCH
+  return winrt::Picker::implementation::RNCPickerComponentView::ClosePicker();
+#else
   return false;
+#endif
 }
 
 } // namespace winrt::Picker

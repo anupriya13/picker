@@ -15,6 +15,7 @@
 #include <winrt/Microsoft.UI.Xaml.Controls.Primitives.h>
 #include <winrt/Microsoft.UI.Xaml.h>
 #include <limits>
+#include <mutex>
 
 namespace winrt::Picker::implementation {
 
@@ -26,6 +27,9 @@ struct RNCPickerStateData : winrt::implements<RNCPickerStateData, winrt::IInspec
 
 struct RNCPickerComponentView : winrt::implements<RNCPickerComponentView, winrt::IInspectable>,
                                   PickerCodegen::BaseRNCPicker<RNCPickerComponentView> {
+  RNCPickerComponentView();
+  ~RNCPickerComponentView();
+
   void InitializeContentIsland(
     const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView);
 
@@ -38,8 +42,18 @@ struct RNCPickerComponentView : winrt::implements<RNCPickerComponentView, winrt:
     const winrt::Microsoft::ReactNative::ComponentView &view,
     const winrt::Microsoft::ReactNative::IComponentState &newState) noexcept override;
 
+  // Static methods for TurboModule to call
+  static bool OpenPicker();
+  static bool ClosePicker();
+
+  // Instance methods
+  bool Open();
+  bool Close();
+
 private:
   void RefreshSize();
+  static void RegisterInstance(RNCPickerComponentView* instance);
+  static void UnregisterInstance(RNCPickerComponentView* instance);
 
   winrt::weak_ref<winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView> m_islandView;
   winrt::Microsoft::UI::Xaml::XamlIsland m_island{nullptr};
@@ -47,6 +61,10 @@ private:
   std::vector<PickerCodegen::RNCPickerSpec_RNCPickerProps_items> m_items;
   winrt::event_token m_selectionChangedToken{};
   bool m_updating{false};
+
+  // Static registry of picker instances
+  static std::mutex s_instancesMutex;
+  static std::vector<RNCPickerComponentView*> s_instances;
 };
 
 void RegisterRNCPickerComponentView(

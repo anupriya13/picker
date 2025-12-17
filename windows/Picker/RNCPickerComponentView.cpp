@@ -7,6 +7,72 @@
 
 namespace winrt::Picker::implementation {
 
+#ifdef RNW_NEW_ARCH
+// Static member definitions
+std::mutex RNCPickerComponentView::s_instancesMutex;
+std::vector<RNCPickerComponentView*> RNCPickerComponentView::s_instances;
+
+RNCPickerComponentView::RNCPickerComponentView() {
+  RegisterInstance(this);
+}
+
+RNCPickerComponentView::~RNCPickerComponentView() {
+  UnregisterInstance(this);
+}
+
+void RNCPickerComponentView::RegisterInstance(RNCPickerComponentView* instance) {
+  std::lock_guard<std::mutex> lock(s_instancesMutex);
+  s_instances.push_back(instance);
+}
+
+void RNCPickerComponentView::UnregisterInstance(RNCPickerComponentView* instance) {
+  std::lock_guard<std::mutex> lock(s_instancesMutex);
+  s_instances.erase(
+    std::remove(s_instances.begin(), s_instances.end(), instance),
+    s_instances.end());
+}
+
+bool RNCPickerComponentView::OpenPicker() {
+  std::lock_guard<std::mutex> lock(s_instancesMutex);
+  if (!s_instances.empty()) {
+    // Open the most recently created picker
+    return s_instances.back()->Open();
+  }
+  return false;
+}
+
+bool RNCPickerComponentView::ClosePicker() {
+  std::lock_guard<std::mutex> lock(s_instancesMutex);
+  if (!s_instances.empty()) {
+    // Close the most recently created picker
+    return s_instances.back()->Close();
+  }
+  return false;
+}
+
+bool RNCPickerComponentView::Open() {
+  if (m_island) {
+    auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
+    if (comboBox) {
+      comboBox.IsDropDownOpen(true);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RNCPickerComponentView::Close() {
+  if (m_island) {
+    auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
+    if (comboBox) {
+      comboBox.IsDropDownOpen(false);
+      return true;
+    }
+  }
+  return false;
+}
+#endif // RNW_NEW_ARCH
+
 void RegisterRNCPickerComponentView(
   winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
 #ifdef RNW_NEW_ARCH
