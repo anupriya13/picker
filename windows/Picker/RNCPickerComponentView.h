@@ -45,6 +45,7 @@ private:
   winrt::Microsoft::UI::Xaml::XamlIsland m_island{nullptr};
   winrt::Microsoft::ReactNative::IComponentState m_state{nullptr};
   std::vector<PickerCodegen::RNCPickerSpec_RNCPickerProps_items> m_items;
+  winrt::event_token m_selectionChangedToken{};
   bool m_updating{false};
 };
 

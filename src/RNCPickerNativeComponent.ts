@@ -1,22 +1,110 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
  *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
  * @format
  */
 'use strict';
 
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-import type { ViewProps } from 'react-native';
-import type { DirectEventHandler } from 'react-native/Libraries/Types/CodegenTypes';
+import type { ViewProps, ColorValue, HostComponent } from 'react-native';
+import type { 
+  Int32,
+  WithDefault,
+  DirectEventHandler 
+} from 'react-native/Libraries/Types/CodegenTypes';
 
-export interface PickerProps extends ViewProps {
-    label: string;
-    onPress?: DirectEventHandler<null>;
-};
+/**
+ * Represents a single item in the Picker.
+ */
+export type RNCPickerItem = Readonly<{
+  /**
+   * Text label for this item.
+   */
+  label: string;
+  
+  /**
+   * The value associated with this item. Can be a string.
+   */
+  value?: string;
+  
+  /**
+   * Text color for this item (processed color as Int32).
+   */
+  textColor?: ColorValue;
+  
+  /**
+   * Used to locate the item in end-to-end tests.
+   */
+  testID?: string;
+  
+  /**
+   * If set to false, the specific item will be disabled.
+   * @default true
+   */
+  enabled?: boolean;
+}>;
 
-export default
-codegenNativeComponent<PickerProps>('PickerProps');
+/**
+ * Event payload when the picker selection changes.
+ */
+export type RNCPickerChangeEvent = Readonly<{
+  /**
+   * The value of the newly selected item.
+   */
+  value: string;
+  
+  /**
+   * The index of the newly selected item.
+   */
+  itemIndex: Int32;
+  
+  /**
+   * The text/label of the newly selected item.
+   */
+  text: string;
+}>;
+
+/**
+ * Props for the RNCPicker native component on Windows.
+ */
+export interface RNCPickerProps extends ViewProps {
+  /**
+   * Array of picker items to display.
+   */
+  items: ReadonlyArray<RNCPickerItem>;
+  
+  /**
+   * The index of the currently selected item.
+   * @default -1
+   */
+  selectedIndex?: WithDefault<Int32, -1>;
+  
+  /**
+   * If set to false, the picker will be disabled.
+   * @default true
+   */
+  enabled?: WithDefault<boolean, true>;
+  
+  /**
+   * Placeholder string displayed when no item is selected.
+   */
+  placeholder?: string;
+  
+  /**
+   * Used to locate this view in end-to-end tests.
+   */
+  testID?: string;
+  
+  /**
+   * Accessibility label for the picker.
+   */
+  accessibilityLabel?: string;
+  
+  /**
+   * Callback when the selected item changes.
+   */
+  onChange?: DirectEventHandler<RNCPickerChangeEvent>;
+}
+
+export default codegenNativeComponent<RNCPickerProps>('RNCPicker') as HostComponent<RNCPickerProps>;

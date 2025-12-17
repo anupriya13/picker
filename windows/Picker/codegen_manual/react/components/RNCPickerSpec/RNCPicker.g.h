@@ -31,6 +31,9 @@ struct RNCPickerSpec_RNCPickerProps_items {
 
   REACT_FIELD(testID)
   std::optional<std::string> testID;
+
+  REACT_FIELD(enabled)
+  std::optional<bool> enabled{};
 };
 
 REACT_STRUCT(RNCPickerProps)
@@ -57,7 +60,7 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
   std::vector<RNCPickerSpec_RNCPickerProps_items> items;
 
   REACT_FIELD(selectedIndex)
-  int32_t selectedIndex{};
+  int32_t selectedIndex{-1};
 
   REACT_FIELD(enabled)
   bool enabled{true};
@@ -76,14 +79,14 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
 
 REACT_STRUCT(RNCPicker_OnChange)
 struct RNCPicker_OnChange {
+  REACT_FIELD(value)
+  std::string value;
+
   REACT_FIELD(itemIndex)
   int32_t itemIndex{};
 
-  REACT_FIELD(value)
-  std::optional<std::string> value;
-
   REACT_FIELD(text)
-  std::optional<std::string> text;
+  std::string text;
 };
 
 struct RNCPickerEventEmitter {

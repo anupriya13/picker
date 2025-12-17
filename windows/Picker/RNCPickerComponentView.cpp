@@ -69,21 +69,21 @@ void RNCPickerComponentView::InitializeContentIsland(
   });
 
   // Listen for selection changes
-  comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
+  m_selectionChangedToken = comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
     if (m_updating) {
       return;
     }
 
     if (auto eventEmitter = this->EventEmitter()) {
-      auto cb = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-      int32_t selectedIndex = cb.SelectedIndex();
+      auto comboBox = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
+      int32_t selectedIndex = comboBox.SelectedIndex();
 
       PickerCodegen::RNCPicker_OnChange eventArgs;
       eventArgs.itemIndex = selectedIndex;
       
       // Get the selected item value if available
       if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_items.size())) {
-        eventArgs.value = m_items[selectedIndex].value;
+        eventArgs.value = m_items[selectedIndex].value.value_or("");
         eventArgs.text = m_items[selectedIndex].label;
       }
       
@@ -120,27 +120,25 @@ void RNCPickerComponentView::UpdateProps(
   m_items.clear();
   
   for (const auto& item : newProps->items) {
-      // Store item data
-      m_items.push_back(item);
-      
-      // Create ComboBoxItem
-      auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
-      comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
-      
-      // Set testID if provided
-      if (item.testID.has_value()) {
-        comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
-      }
-      
+    // Store item data
+    m_items.push_back(item);
+    
+    // Create ComboBoxItem
+    auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
+    comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
+    
+    // Set testID if provided
+    if (item.testID.has_value()) {
+      comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
+    }
+    
     comboBox.Items().Append(comboBoxItem);
   }
 
   // Update selected index
-  {
-    int32_t selectedIndex = newProps->selectedIndex;
-    if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(comboBox.Items().Size())) {
-      comboBox.SelectedIndex(selectedIndex);
-    }
+  int32_t selectedIndex = newProps->selectedIndex;
+  if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(comboBox.Items().Size())) {
+    comboBox.SelectedIndex(selectedIndex);
   }
 
   m_updating = false;
@@ -174,4 +172,5 @@ void RNCPickerComponentView::UpdateState(
   m_state = newState;
 }
 #endif // defined(RNW_NEW_ARCH)
-}
+
+} // namespace winrt::Picker::implementation
