@@ -6693,7 +6693,7 @@ __metadata:
     react-native-macos: "npm:^0.75"
     react-native-test-app: "npm:^4.0.4"
     react-native-web: "npm:^0.14.10"
-    react-native-windows: "npm:0.0.0-canary.1019"
+    react-native-windows: "npm:0.0.0-canary.1020"
     react-test-renderer: "npm:19.1.0"
     rimraf: "npm:^2.6.3"
     semantic-release: "npm:^19.0.3"
@@ -8359,7 +8359,7 @@ __metadata:
     react-native: "npm:0.82.0-nightly-20250806-5936f29d6"
     react-native-macos: "npm:^0.75.0"
     react-native-test-app: "npm:^4.0.4"
-    react-native-windows: "npm:0.0.0-canary.1019"
+    react-native-windows: "npm:0.0.0-canary.1020"
     react-test-renderer: "npm:19.1.0"
     typescript: "npm:5.0.4"
   languageName: unknown
@@ -22168,9 +22168,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-windows@npm:0.0.0-canary.1019":
-  version: 0.0.0-canary.1019
-  resolution: "react-native-windows@npm:0.0.0-canary.1019"
+"react-native-windows@npm:0.0.0-canary.1020":
+  version: 0.0.0-canary.1020
+  resolution: "react-native-windows@npm:0.0.0-canary.1020"
   dependencies:
     "@babel/runtime": "npm:^7.0.0"
     "@jest/create-cache-key-function": "npm:^29.7.0"
@@ -22221,7 +22221,7 @@ __metadata:
     "@types/react": ^19.1.0
     react: ^19.1.0
     react-native: 0.82.0-nightly-20250806-5936f29d6
-  checksum: 10/479d6dfaa2f265a2775271821f2514bccd1ce79a44a643370228802e01bb4b48b70563f8d122008cc41095fcc215b6a79439e1db24b2e3d3e09cf785b1c2924b
+  checksum: 10/8630a158e48313418f286847b1feb327c0a016f4a3ae3885cbaeb8da69383c7c4b46b99dcff8f9bf669c6d1b80a068c3cdec7a4df6dcbc17e05deeda11303643
   languageName: node
   linkType: hard
 
