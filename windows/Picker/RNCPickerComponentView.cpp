@@ -51,23 +51,25 @@ bool RNCPickerComponentView::ClosePicker() {
 }
 
 bool RNCPickerComponentView::Open() {
-  if (m_island) {
-    auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-    if (comboBox) {
-      comboBox.IsDropDownOpen(true);
+  try {
+    if (m_comboBox) {
+      m_comboBox.IsDropDownOpen(true);
       return true;
     }
+  } catch (...) {
+    // Ignore exceptions during open
   }
   return false;
 }
 
 bool RNCPickerComponentView::Close() {
-  if (m_island) {
-    auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-    if (comboBox) {
-      comboBox.IsDropDownOpen(false);
+  try {
+    if (m_comboBox) {
+      m_comboBox.IsDropDownOpen(false);
       return true;
     }
+  } catch (...) {
+    // Ignore exceptions during close
   }
   return false;
 }
@@ -126,23 +128,23 @@ void RegisterRNCPickerComponentView(
 void RNCPickerComponentView::InitializeContentIsland(
   const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView) {
   // Create ComboBox for picker functionality
-  auto comboBox = winrt::Microsoft::UI::Xaml::Controls::ComboBox();
-  comboBox.HorizontalAlignment(winrt::Microsoft::UI::Xaml::HorizontalAlignment::Stretch);
+  m_comboBox = winrt::Microsoft::UI::Xaml::Controls::ComboBox();
+  m_comboBox.HorizontalAlignment(winrt::Microsoft::UI::Xaml::HorizontalAlignment::Stretch);
 
   // Listen for size changes on the comboBox
-  comboBox.SizeChanged([this](auto const& /*sender*/, auto const& /*args*/) {
+  m_comboBox.SizeChanged([this](auto const& /*sender*/, auto const& /*args*/) {
     RefreshSize();
   });
 
   // Listen for selection changes
-  m_selectionChangedToken = comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
+  m_selectionChangedToken = m_comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
     if (m_updating) {
       return;
     }
 
     if (auto eventEmitter = this->EventEmitter()) {
-      auto comboBox = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-      int32_t selectedIndex = comboBox.SelectedIndex();
+      auto cb = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
+      int32_t selectedIndex = cb.SelectedIndex();
 
       PickerCodegen::RNCPicker_OnPickerSelect eventArgs;
       eventArgs.itemIndex = selectedIndex;
@@ -158,7 +160,7 @@ void RNCPickerComponentView::InitializeContentIsland(
   });
 
   m_island = winrt::Microsoft::UI::Xaml::XamlIsland{};
-  m_island.Content(comboBox);
+  m_island.Content(m_comboBox);
   islandView.Connect(m_island.ContentIsland());
   m_islandView = winrt::make_weak(islandView);
 }
@@ -169,20 +171,22 @@ void RNCPickerComponentView::UpdateProps(
   const winrt::com_ptr<PickerCodegen::RNCPickerProps> &oldProps) noexcept {
   BaseRNCPicker::UpdateProps(view, newProps, oldProps);
   
-  auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
+  if (!m_comboBox) {
+    return;
+  }
   
   m_updating = true;
 
   // Update enabled state
-  comboBox.IsEnabled(newProps->enabled);
+  m_comboBox.IsEnabled(newProps->enabled);
 
   // Update placeholder text
   if (newProps->placeholder.has_value()) {
-    comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));
+    m_comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));
   }
 
   // Update items
-  comboBox.Items().Clear();
+  m_comboBox.Items().Clear();
   m_items.clear();
   
   for (const auto& item : newProps->items) {
@@ -198,13 +202,13 @@ void RNCPickerComponentView::UpdateProps(
       comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
     }
     
-    comboBox.Items().Append(comboBoxItem);
+    m_comboBox.Items().Append(comboBoxItem);
   }
 
   // Update selected index
   int32_t selectedIndex = newProps->selectedIndex;
-  if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(comboBox.Items().Size())) {
-    comboBox.SelectedIndex(selectedIndex);
+  if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
+    m_comboBox.SelectedIndex(selectedIndex);
   }
 
   m_updating = false;
@@ -214,13 +218,16 @@ void RNCPickerComponentView::UpdateProps(
 
 // Measure comboBox with new content and update state if needed.
 void RNCPickerComponentView::RefreshSize() {
-  auto comboBox = m_island.Content().as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-  comboBox.Measure(winrt::Windows::Foundation::Size{
+  if (!m_comboBox) {
+    return;
+  }
+  
+  m_comboBox.Measure(winrt::Windows::Foundation::Size{
       std::numeric_limits<float>::infinity(),
       std::numeric_limits<float>::infinity()
     });
 
-  auto desiredSize = comboBox.DesiredSize();
+  auto desiredSize = m_comboBox.DesiredSize();
 
   if (m_state) {
     auto currentState = winrt::get_self<RNCPickerStateData>(m_state.Data());
