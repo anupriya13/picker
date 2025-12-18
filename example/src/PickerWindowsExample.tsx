@@ -4,8 +4,6 @@ import {View, Text, Button, StyleSheet} from 'react-native';
 import {
   RNCPicker,
   multiply,
-  openPicker,
-  closePicker,
   type RNCPickerItem,
   type RNCPickerChangeEvent,
 } from '@react-native-picker/picker/src';
@@ -484,67 +482,6 @@ function DynamicItemsPickerExample() {
   );
 }
 
-// Example 8: Open/Close Programmatically
-function OpenClosePickerExample() {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [status, setStatus] = React.useState('Ready');
-
-  const items: RNCPickerItem[] = [
-    {label: 'Option 1', value: 'opt1'},
-    {label: 'Option 2', value: 'opt2'},
-    {label: 'Option 3', value: 'opt3'},
-  ];
-
-  const handleOpen = () => {
-    try {
-      const result = openPicker();
-      setStatus(result ? 'Opened' : 'Failed to open');
-    } catch (error) {
-      setStatus(`Error: ${error}`);
-    }
-  };
-
-  const handleClose = () => {
-    try {
-      const result = closePicker();
-      setStatus(result ? 'Closed' : 'Failed to close');
-    } catch (error) {
-      setStatus(`Error: ${error}`);
-    }
-  };
-
-  return (
-    <ExampleCard>
-      <Text style={styles.description}>
-        Control picker programmatically via TurboModule
-      </Text>
-      <View style={styles.pickerContainer}>
-        <RNCPicker
-          items={items}
-          selectedIndex={selectedIndex}
-          onPickerSelect={(e: {nativeEvent: RNCPickerChangeEvent}) =>
-            setSelectedIndex(e.nativeEvent.itemIndex)
-          }
-          style={styles.picker}
-        />
-      </View>
-
-      <View style={styles.buttonRow}>
-        <View style={styles.buttonWrapper}>
-          <Button title="Open Picker" onPress={handleOpen} />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button title="Close Picker" onPress={handleClose} />
-        </View>
-      </View>
-
-      <View style={styles.statusBox}>
-        <Text style={styles.statusText}>Status: {status}</Text>
-      </View>
-    </ExampleCard>
-  );
-}
-
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#ffffff',
@@ -786,9 +723,5 @@ export const examples = [
   {
     title: 'Dynamic Items',
     render: DynamicItemsPickerExample,
-  },
-  {
-    title: 'Programmatic Control',
-    render: OpenClosePickerExample,
   },
 ];

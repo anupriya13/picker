@@ -22,18 +22,6 @@ export interface Spec extends TurboModule {
    * @returns Product of a and b
    */
   multiply(a: number, b: number): number;
-
-  /**
-   * Opens the picker programmatically (if supported).
-   * Returns true if the picker was opened successfully.
-   */
-  openPicker?(): boolean;
-
-  /**
-   * Closes the picker programmatically (if supported).
-   * Returns true if the picker was closed successfully.
-   */
-  closePicker?(): boolean;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Picker');

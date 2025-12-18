@@ -18,8 +18,6 @@ namespace PickerCodegen {
 struct PickerModuleSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
   static constexpr auto methods = std::tuple{
       SyncMethod<double(double, double) noexcept>{0, L"multiply"},
-      SyncMethod<bool() noexcept>{1, L"openPicker"},
-      SyncMethod<bool() noexcept>{2, L"closePicker"},
   };
 
   template <class TModule>
@@ -31,16 +29,6 @@ struct PickerModuleSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
           "multiply",
           "    REACT_SYNC_METHOD(multiply) double multiply(double a, double b) noexcept { /* implementation */ }\n"
           "    REACT_SYNC_METHOD(multiply) static double multiply(double a, double b) noexcept { /* implementation */ }\n");
-    REACT_SHOW_METHOD_SPEC_ERRORS(
-          1,
-          "openPicker",
-          "    REACT_SYNC_METHOD(openPicker) bool openPicker() noexcept { /* implementation */ }\n"
-          "    REACT_SYNC_METHOD(openPicker) static bool openPicker() noexcept { /* implementation */ }\n");
-    REACT_SHOW_METHOD_SPEC_ERRORS(
-          2,
-          "closePicker",
-          "    REACT_SYNC_METHOD(closePicker) bool closePicker() noexcept { /* implementation */ }\n"
-          "    REACT_SYNC_METHOD(closePicker) static bool closePicker() noexcept { /* implementation */ }\n");
   }
 };
 

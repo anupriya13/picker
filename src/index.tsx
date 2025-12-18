@@ -17,22 +17,6 @@ export function multiply(a: number, b: number): number {
   return NativePickerModule.multiply(a, b);
 }
 
-/**
- * Opens the picker programmatically (if supported).
- * Returns true if the picker was opened successfully, undefined if not supported.
- */
-export function openPicker(): boolean | undefined {
-  return NativePickerModule.openPicker?.();
-}
-
-/**
- * Closes the picker programmatically (if supported).
- * Returns true if the picker was closed successfully, undefined if not supported.
- */
-export function closePicker(): boolean | undefined {
-  return NativePickerModule.closePicker?.();
-}
-
 // Export the native component and its types
 export { default as RNCPicker } from './RNCPickerNativeComponent';
 export type {

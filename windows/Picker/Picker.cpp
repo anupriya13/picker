@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Picker.h"
-#include "RNCPickerComponentView.h"
 
 namespace winrt::Picker
 {
@@ -15,22 +14,6 @@ void Picker::Initialize(React::ReactContext const &reactContext) noexcept {
 
 double Picker::multiply(double a, double b) noexcept {
   return a * b;
-}
-
-bool Picker::openPicker() noexcept {
-#ifdef RNW_NEW_ARCH
-  return winrt::Picker::implementation::RNCPickerComponentView::OpenPicker();
-#else
-  return false;
-#endif
-}
-
-bool Picker::closePicker() noexcept {
-#ifdef RNW_NEW_ARCH
-  return winrt::Picker::implementation::RNCPickerComponentView::ClosePicker();
-#else
-  return false;
-#endif
 }
 
 } // namespace winrt::Picker

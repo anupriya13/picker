@@ -22,12 +22,6 @@ struct Picker
   REACT_SYNC_METHOD(multiply)
   double multiply(double a, double b) noexcept;
 
-  REACT_SYNC_METHOD(openPicker)
-  bool openPicker() noexcept;
-
-  REACT_SYNC_METHOD(closePicker)
-  bool closePicker() noexcept;
-
 private:
   React::ReactContext m_context;
 };
