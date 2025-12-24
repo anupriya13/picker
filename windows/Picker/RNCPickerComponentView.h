@@ -5,8 +5,6 @@
 
 #include "pch.h"
 
-#ifdef RNW_NEW_ARCH
-
 #include "codegen_manual/react/components/RNCPickerSpec/RNCPicker.g.h"
 
 #include <winrt/Microsoft.ReactNative.h>
@@ -24,22 +22,23 @@ struct RNCPickerStateData : winrt::implements<RNCPickerStateData, winrt::IInspec
   winrt::Windows::Foundation::Size desiredSize;
 };
 
-struct RNCPickerComponentView : winrt::implements<RNCPickerComponentView, winrt::IInspectable>,
-                                  PickerCodegen::BaseRNCPicker<RNCPickerComponentView> {
+struct RNCPickerComponentView
+    : winrt::implements<RNCPickerComponentView, winrt::IInspectable>,
+      PickerCodegen::BaseRNCPicker<RNCPickerComponentView> {
 
   void InitializeContentIsland(
-    const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView);
+      const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView& islandView);
 
   void UpdateProps(
-    const winrt::Microsoft::ReactNative::ComponentView &view,
-    const winrt::com_ptr<PickerCodegen::RNCPickerProps> &newProps,
-    const winrt::com_ptr<PickerCodegen::RNCPickerProps> &oldProps) noexcept override;
+      const winrt::Microsoft::ReactNative::ComponentView& view,
+      const winrt::com_ptr<PickerCodegen::RNCPickerProps>& newProps,
+      const winrt::com_ptr<PickerCodegen::RNCPickerProps>& oldProps) noexcept override;
 
   void UpdateState(
-    const winrt::Microsoft::ReactNative::ComponentView &view,
-    const winrt::Microsoft::ReactNative::IComponentState &newState) noexcept override;
+      const winrt::Microsoft::ReactNative::ComponentView& view,
+      const winrt::Microsoft::ReactNative::IComponentState& newState) noexcept override;
 
-private:
+ private:
   void RefreshSize();
   void EmitPickerSelectEvent();
 
@@ -48,8 +47,8 @@ private:
   winrt::Microsoft::UI::Xaml::Controls::ComboBox m_comboBox{nullptr};
   winrt::Microsoft::ReactNative::IComponentState m_state{nullptr};
   std::vector<PickerCodegen::RNCPickerSpec_RNCPickerProps_items> m_items;
-  winrt::event_token m_selectionChangedToken{};
-  winrt::event_token m_textSubmittedToken{};
+  winrt::Microsoft::UI::Xaml::Controls::ComboBox::SelectionChanged_revoker m_selectionChangedRevoker;
+  winrt::Microsoft::UI::Xaml::Controls::ComboBox::TextSubmitted_revoker m_textSubmittedRevoker;
   bool m_updating{false};
 };
 
@@ -58,7 +57,6 @@ void RegisterRNCPickerComponentView(
 
 } // namespace winrt::Picker::implementation
 
-#endif // RNW_NEW_ARCH
 
 
 

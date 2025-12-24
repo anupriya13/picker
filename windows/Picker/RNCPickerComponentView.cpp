@@ -9,7 +9,6 @@ namespace winrt::Picker::implementation {
 
 void RegisterRNCPickerComponentView(
   winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
-#ifdef RNW_NEW_ARCH
   PickerCodegen::RegisterRNCPickerNativeComponent<winrt::Picker::implementation::RNCPickerComponentView>(
     packageBuilder,
     [](const winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder &builder) {
@@ -17,7 +16,7 @@ void RegisterRNCPickerComponentView(
       // Use SetContentIslandComponentViewInitializer
       builder.SetContentIslandComponentViewInitializer(
         [](const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView) noexcept {
-          auto userData = winrt::make_self<winrt::Picker::implementation::RNCPickerComponentView>();
+          const auto userData = winrt::make_self<winrt::Picker::implementation::RNCPickerComponentView>();
           userData->InitializeContentIsland(islandView);
           islandView.UserData(*userData);
         });
@@ -33,7 +32,7 @@ void RegisterRNCPickerComponentView(
            winrt::Microsoft::ReactNative::LayoutContext const& ,
            winrt::Microsoft::ReactNative::LayoutConstraints const&) noexcept {
 
-          auto currentState = winrt::get_self<RNCPickerStateData>(shadowNode.StateData());
+          const auto currentState = winrt::get_self<RNCPickerStateData>(shadowNode.StateData());
 
           if (currentState && currentState->desiredSize.Width > 0) {
             // Return the measured size from state
@@ -48,15 +47,13 @@ void RegisterRNCPickerComponentView(
       builder.as<winrt::Microsoft::ReactNative::IReactViewComponentBuilder>().SetUpdateStateHandler(
         [](const winrt::Microsoft::ReactNative::ComponentView& view,
            const winrt::Microsoft::ReactNative::IComponentState& newState) {
-          auto islandView = view.as<winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView>();
-          auto userData = islandView.UserData().as<winrt::Picker::implementation::RNCPickerComponentView>();
+          const auto islandView = view.as<winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView>();
+          const auto userData = islandView.UserData().as<winrt::Picker::implementation::RNCPickerComponentView>();
           userData->UpdateState(view, newState);
         });
     });
-#endif
 }
 
-#ifdef RNW_NEW_ARCH
 void RNCPickerComponentView::InitializeContentIsland(
   const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView) {
   // Create ComboBox for picker functionality
@@ -72,20 +69,22 @@ void RNCPickerComponentView::InitializeContentIsland(
   });
 
   // Listen for selection changes
-  m_selectionChangedToken = m_comboBox.SelectionChanged([this](auto const& /*sender*/, auto const& /*args*/) {
-    if (m_updating) {
-      return;
-    }
-    EmitPickerSelectEvent();
-  });
+  m_selectionChangedRevoker = m_comboBox.SelectionChanged(
+      winrt::auto_revoke, [this](const auto& /*sender*/, const auto& /*args*/) {
+        if (m_updating) {
+          return;
+        }
+        EmitPickerSelectEvent();
+      });
 
   // Listen for text submitted (when user presses Enter in editable mode)
-  m_textSubmittedToken = m_comboBox.TextSubmitted([this](auto const& /*sender*/, auto const& /*args*/) {
-    if (m_updating) {
-      return;
-    }
-    EmitPickerSelectEvent();
-  });
+  m_textSubmittedRevoker = m_comboBox.TextSubmitted(
+      winrt::auto_revoke, [this](const auto& /*sender*/, const auto& /*args*/) {
+        if (m_updating) {
+          return;
+        }
+        EmitPickerSelectEvent();
+      });
 
   m_island = winrt::Microsoft::UI::Xaml::XamlIsland{};
   m_island.Content(m_comboBox);
@@ -95,7 +94,7 @@ void RNCPickerComponentView::InitializeContentIsland(
 
 void RNCPickerComponentView::EmitPickerSelectEvent() {
   if (auto eventEmitter = this->EventEmitter()) {
-    int32_t selectedIndex = m_comboBox.SelectedIndex();
+    const int32_t selectedIndex = m_comboBox.SelectedIndex();
 
     PickerCodegen::RNCPicker_OnPickerSelect eventArgs;
     eventArgs.itemIndex = selectedIndex;
@@ -159,7 +158,7 @@ void RNCPickerComponentView::UpdateProps(
   }
 
   // Update selected index
-  int32_t selectedIndex = newProps->selectedIndex;
+  const int32_t selectedIndex = newProps->selectedIndex;
   if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
     m_comboBox.SelectedIndex(selectedIndex);
   } else {
@@ -188,10 +187,10 @@ void RNCPickerComponentView::RefreshSize() {
       std::numeric_limits<float>::infinity()
     });
 
-  auto desiredSize = m_comboBox.DesiredSize();
+  const auto desiredSize = m_comboBox.DesiredSize();
 
   if (m_state) {
-    auto currentState = winrt::get_self<RNCPickerStateData>(m_state.Data());
+    const auto currentState = winrt::get_self<RNCPickerStateData>(m_state.Data());
     if (desiredSize != currentState->desiredSize) {
       m_state.UpdateStateWithMutation([desiredSize](winrt::Windows::Foundation::IInspectable /*data*/) {
         return winrt::make<RNCPickerStateData>(desiredSize);
@@ -205,6 +204,5 @@ void RNCPickerComponentView::UpdateState(
   const winrt::Microsoft::ReactNative::IComponentState& newState) noexcept {
   m_state = newState;
 }
-#endif // defined(RNW_NEW_ARCH)
 
 } // namespace winrt::Picker::implementation
