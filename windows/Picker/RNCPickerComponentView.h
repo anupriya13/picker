@@ -41,6 +41,7 @@ struct RNCPickerComponentView : winrt::implements<RNCPickerComponentView, winrt:
 
 private:
   void RefreshSize();
+  void EmitPickerSelectEvent();
 
   winrt::weak_ref<winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView> m_islandView;
   winrt::Microsoft::UI::Xaml::XamlIsland m_island{nullptr};
@@ -48,6 +49,7 @@ private:
   winrt::Microsoft::ReactNative::IComponentState m_state{nullptr};
   std::vector<PickerCodegen::RNCPickerSpec_RNCPickerProps_items> m_items;
   winrt::event_token m_selectionChangedToken{};
+  winrt::event_token m_textSubmittedToken{};
   bool m_updating{false};
 };
 

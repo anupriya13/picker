@@ -62,6 +62,9 @@ void RNCPickerComponentView::InitializeContentIsland(
   // Create ComboBox for picker functionality
   m_comboBox = winrt::Microsoft::UI::Xaml::Controls::ComboBox();
   m_comboBox.HorizontalAlignment(winrt::Microsoft::UI::Xaml::HorizontalAlignment::Stretch);
+  
+  // For editable ComboBox, trigger selection change always (not just on commit)
+  m_comboBox.SelectionChangedTrigger(winrt::Microsoft::UI::Xaml::Controls::ComboBoxSelectionChangedTrigger::Always);
 
   // Listen for size changes on the comboBox
   m_comboBox.SizeChanged([this](auto const& /*sender*/, auto const& /*args*/) {
@@ -69,32 +72,47 @@ void RNCPickerComponentView::InitializeContentIsland(
   });
 
   // Listen for selection changes
-  m_selectionChangedToken = m_comboBox.SelectionChanged([this](auto const& sender, auto const& /*args*/) {
+  m_selectionChangedToken = m_comboBox.SelectionChanged([this](auto const& /*sender*/, auto const& /*args*/) {
     if (m_updating) {
       return;
     }
+    EmitPickerSelectEvent();
+  });
 
-    if (auto eventEmitter = this->EventEmitter()) {
-      auto cb = sender.as<winrt::Microsoft::UI::Xaml::Controls::ComboBox>();
-      int32_t selectedIndex = cb.SelectedIndex();
-
-      PickerCodegen::RNCPicker_OnPickerSelect eventArgs;
-      eventArgs.itemIndex = selectedIndex;
-      
-      // Get the selected item value if available
-      if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_items.size())) {
-        eventArgs.value = m_items[selectedIndex].value.value_or("");
-        eventArgs.text = m_items[selectedIndex].label;
-      }
-      
-      eventEmitter->onPickerSelect(eventArgs);
+  // Listen for text submitted (when user presses Enter in editable mode)
+  m_textSubmittedToken = m_comboBox.TextSubmitted([this](auto const& /*sender*/, auto const& /*args*/) {
+    if (m_updating) {
+      return;
     }
+    EmitPickerSelectEvent();
   });
 
   m_island = winrt::Microsoft::UI::Xaml::XamlIsland{};
   m_island.Content(m_comboBox);
   islandView.Connect(m_island.ContentIsland());
   m_islandView = winrt::make_weak(islandView);
+}
+
+void RNCPickerComponentView::EmitPickerSelectEvent() {
+  if (auto eventEmitter = this->EventEmitter()) {
+    int32_t selectedIndex = m_comboBox.SelectedIndex();
+
+    PickerCodegen::RNCPicker_OnPickerSelect eventArgs;
+    eventArgs.itemIndex = selectedIndex;
+    
+    // Get the selected item value and text if available
+    if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_items.size())) {
+      eventArgs.value = m_items[selectedIndex].value.value_or("");
+      eventArgs.text = m_items[selectedIndex].label;
+    } else {
+      // In editable mode, user may have typed custom text
+      // Get the text from the ComboBox
+      eventArgs.text = winrt::to_string(m_comboBox.Text());
+      eventArgs.value = eventArgs.text;
+    }
+    
+    eventEmitter->onPickerSelect(eventArgs);
+  }
 }
 
 void RNCPickerComponentView::UpdateProps(
@@ -114,11 +132,6 @@ void RNCPickerComponentView::UpdateProps(
 
   // Update editable state
   m_comboBox.IsEditable(newProps->editable);
-
-  // Update text (for editable mode)
-  if (newProps->text.has_value()) {
-    m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
-  }
 
   // Update placeholder text
   if (newProps->placeholder.has_value()) {
@@ -149,6 +162,14 @@ void RNCPickerComponentView::UpdateProps(
   int32_t selectedIndex = newProps->selectedIndex;
   if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
     m_comboBox.SelectedIndex(selectedIndex);
+  } else {
+    m_comboBox.SelectedIndex(-1);
+  }
+
+  // Update text (for editable mode) - must be done AFTER setting SelectedIndex
+  // Only set custom text when no item is selected (user typed custom text)
+  if (newProps->editable && newProps->text.has_value() && selectedIndex < 0) {
+    m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
   }
 
   m_updating = false;

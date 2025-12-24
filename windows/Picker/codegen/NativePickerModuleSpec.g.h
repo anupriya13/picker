@@ -16,13 +16,15 @@
 namespace PickerCodegen {
 
 struct PickerModuleSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
-  static constexpr auto methods = std::tuple<>{};
+  static constexpr auto methods = std::tuple{
+
+  };
 
   template <class TModule>
   static constexpr void ValidateModule() noexcept {
     constexpr auto methodCheckResults = CheckMethods<TModule, PickerModuleSpec>();
-    // No methods to validate currently
-    (void)methodCheckResults;
+
+
   }
 };
 
