@@ -26,6 +26,15 @@ struct RNCPickerSpec_RNCPickerProps_items {
 
   REACT_FIELD(testID)
   std::optional<std::string> testID;
+
+  bool operator==(const RNCPickerSpec_RNCPickerProps_items& other) const noexcept {
+    return label == other.label && value == other.value && testID == other.testID;
+    // Note: textColor comparison omitted as Color doesn't have operator==
+  }
+
+  bool operator!=(const RNCPickerSpec_RNCPickerProps_items& other) const noexcept {
+    return !(*this == other);
+  }
 };
 
 REACT_STRUCT(RNCPickerProps)

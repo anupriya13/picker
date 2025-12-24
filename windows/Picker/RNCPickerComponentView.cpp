@@ -115,73 +115,79 @@ void RNCPickerComponentView::EmitPickerSelectEvent() {
 }
 
 void RNCPickerComponentView::UpdateProps(
-  const winrt::Microsoft::ReactNative::ComponentView &view,
-  const winrt::com_ptr<PickerCodegen::RNCPickerProps> &newProps,
-  const winrt::com_ptr<PickerCodegen::RNCPickerProps> &oldProps) noexcept {
+    const winrt::Microsoft::ReactNative::ComponentView& view,
+    const winrt::com_ptr<PickerCodegen::RNCPickerProps>& newProps,
+    const winrt::com_ptr<PickerCodegen::RNCPickerProps>& oldProps) noexcept {
   BaseRNCPicker::UpdateProps(view, newProps, oldProps);
-  
-  if (!m_comboBox) {
-    return;
-  }
-  
+
   m_updating = true;
 
-  // Update enabled state
-  m_comboBox.IsEnabled(newProps->enabled);
-
-  // Update editable state
-  m_comboBox.IsEditable(newProps->editable);
-
-  // Update placeholder text
-  if (newProps->placeholder.has_value()) {
-    m_comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));
+  // Update enabled state only if changed
+  if (!oldProps || oldProps->enabled != newProps->enabled) {
+    m_comboBox.IsEnabled(newProps->enabled);
   }
 
-  // Update items
-  m_comboBox.Items().Clear();
-  m_items.clear();
-  
-  for (const auto& item : newProps->items) {
-    // Store item data
-    m_items.push_back(item);
-    
-    // Create ComboBoxItem
-    auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
-    comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
-    
-    // Set testID if provided
-    if (item.testID.has_value()) {
-      comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
+  // Update editable state only if changed
+  if (!oldProps || oldProps->editable != newProps->editable) {
+    m_comboBox.IsEditable(newProps->editable);
+  }
+
+  // Update placeholder text only if changed
+  if (!oldProps || oldProps->placeholder != newProps->placeholder) {
+    if (newProps->placeholder.has_value()) {
+      m_comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));
+    } else {
+      m_comboBox.PlaceholderText(L"");
     }
-    
-    m_comboBox.Items().Append(comboBoxItem);
   }
 
-  // Update selected index
-  const int32_t selectedIndex = newProps->selectedIndex;
-  if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
-    m_comboBox.SelectedIndex(selectedIndex);
-  } else {
-    m_comboBox.SelectedIndex(-1);
+  // Update items only if changed
+  if (!oldProps || oldProps->items != newProps->items) {
+    m_comboBox.Items().Clear();
+    m_items.clear();
+
+    for (const auto& item : newProps->items) {
+      // Store item data
+      m_items.push_back(item);
+
+      // Create ComboBoxItem
+      auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
+      comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
+
+      // Set testID if provided
+      if (item.testID.has_value()) {
+        comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
+      }
+
+      m_comboBox.Items().Append(comboBoxItem);
+    }
   }
 
-  // Update text (for editable mode) - must be done AFTER setting SelectedIndex
+  // Update selected index only if changed
+  if (!oldProps || oldProps->selectedIndex != newProps->selectedIndex) {
+    const int32_t selectedIndex = newProps->selectedIndex;
+    if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
+      m_comboBox.SelectedIndex(selectedIndex);
+    } else {
+      m_comboBox.SelectedIndex(-1);
+    }
+  }
+
+  // Update text (for editable mode) only if changed
   // Only set custom text when no item is selected (user typed custom text)
-  if (newProps->editable && newProps->text.has_value() && selectedIndex < 0) {
-    m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
+  if (!oldProps || oldProps->text != newProps->text) {
+    if (newProps->editable && newProps->text.has_value() && newProps->selectedIndex < 0) {
+      m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
+    }
   }
 
   m_updating = false;
-  
+
   RefreshSize();
 }
 
 // Measure comboBox with new content and update state if needed.
 void RNCPickerComponentView::RefreshSize() {
-  if (!m_comboBox) {
-    return;
-  }
-  
   m_comboBox.Measure(winrt::Windows::Foundation::Size{
       std::numeric_limits<float>::infinity(),
       std::numeric_limits<float>::infinity()
