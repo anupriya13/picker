@@ -16,19 +16,13 @@
 namespace PickerCodegen {
 
 struct PickerModuleSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
-  static constexpr auto methods = std::tuple{
-      SyncMethod<double(double, double) noexcept>{0, L"multiply"},
-  };
+  static constexpr auto methods = std::tuple<>{};
 
   template <class TModule>
   static constexpr void ValidateModule() noexcept {
     constexpr auto methodCheckResults = CheckMethods<TModule, PickerModuleSpec>();
-
-    REACT_SHOW_METHOD_SPEC_ERRORS(
-          0,
-          "multiply",
-          "    REACT_SYNC_METHOD(multiply) double multiply(double a, double b) noexcept { /* implementation */ }\n"
-          "    REACT_SYNC_METHOD(multiply) static double multiply(double a, double b) noexcept { /* implementation */ }\n");
+    // No methods to validate currently
+    (void)methodCheckResults;
   }
 };
 

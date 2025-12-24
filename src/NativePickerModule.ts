@@ -15,13 +15,7 @@ import { TurboModuleRegistry } from 'react-native';
  * Provides native functionality for the Picker component.
  */
 export interface Spec extends TurboModule {
-  /**
-   * Simple multiply function for testing TurboModule connection.
-   * @param a First number
-   * @param b Second number
-   * @returns Product of a and b
-   */
-  multiply(a: number, b: number): number;
+  // TurboModule methods will be added here as needed
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Picker');

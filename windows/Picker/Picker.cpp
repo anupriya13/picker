@@ -12,8 +12,4 @@ void Picker::Initialize(React::ReactContext const &reactContext) noexcept {
   m_context = reactContext;
 }
 
-double Picker::multiply(double a, double b) noexcept {
-  return a * b;
-}
-
 } // namespace winrt::Picker

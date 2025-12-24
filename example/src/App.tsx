@@ -14,8 +14,6 @@ import * as PickerExamples from './PickerExample';
 import * as PickerIOSExamples from './PickerIOSExample';
 import * as PickerWindowsExamples from './PickerWindowsExample';
 
-console.log("app.tsx loaded - Platform.OS =", Platform.OS);
-
 export default function App() {
   const [isRTL, setIsRTL] = React.useState(I18nManager.isRTL);
   React.useEffect(() => {

@@ -112,6 +112,14 @@ void RNCPickerComponentView::UpdateProps(
   // Update enabled state
   m_comboBox.IsEnabled(newProps->enabled);
 
+  // Update editable state
+  m_comboBox.IsEditable(newProps->editable);
+
+  // Update text (for editable mode)
+  if (newProps->text.has_value()) {
+    m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
+  }
+
   // Update placeholder text
   if (newProps->placeholder.has_value()) {
     m_comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));

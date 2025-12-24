@@ -31,9 +31,6 @@ struct RNCPickerSpec_RNCPickerProps_items {
 
   REACT_FIELD(testID)
   std::optional<std::string> testID;
-
-  REACT_FIELD(enabled)
-  std::optional<bool> enabled{};
 };
 
 REACT_STRUCT(RNCPickerProps)
@@ -47,6 +44,8 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
        selectedIndex = cloneFromProps->selectedIndex;
        enabled = cloneFromProps->enabled;
        placeholder = cloneFromProps->placeholder;
+       editable = cloneFromProps->editable;
+       text = cloneFromProps->text;
        testID = cloneFromProps->testID;
        accessibilityLabel = cloneFromProps->accessibilityLabel;  
      }
@@ -67,6 +66,12 @@ struct RNCPickerProps : winrt::implements<RNCPickerProps, winrt::Microsoft::Reac
 
   REACT_FIELD(placeholder)
   std::optional<std::string> placeholder;
+
+  REACT_FIELD(editable)
+  bool editable{false};
+
+  REACT_FIELD(text)
+  std::optional<std::string> text;
 
   REACT_FIELD(testID)
   std::optional<std::string> testID;

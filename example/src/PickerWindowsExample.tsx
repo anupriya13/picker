@@ -3,11 +3,10 @@ import {View, Text, Button, StyleSheet} from 'react-native';
 // @ts-ignore - module resolution works at runtime via workspace linking
 import {
   RNCPicker,
-  multiply,
   type RNCPickerItem,
   type RNCPickerChangeEvent,
 } from '@react-native-picker/picker/src';
-import { useEffect, useState } from 'react';
+
 // Reusable Card component for examples
 function ExampleCard({children}: {children: React.ReactNode}) {
   return <View style={styles.card}>{children}</View>;
@@ -120,7 +119,53 @@ function DisabledPickerExample() {
   );
 }
 
-// Example 4: Color Picker
+// Example 4: Editable Picker
+function EditablePickerExample() {
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
+  const [text, setText] = React.useState('');
+  const items: RNCPickerItem[] = [
+    {label: 'Apple', value: 'apple'},
+    {label: 'Banana', value: 'banana'},
+    {label: 'Cherry', value: 'cherry'},
+    {label: 'Date', value: 'date'},
+    {label: 'Elderberry', value: 'elderberry'},
+  ];
+
+  const handleChange = (event: {nativeEvent: RNCPickerChangeEvent}) => {
+    setSelectedIndex(event.nativeEvent.itemIndex);
+    setText(event.nativeEvent.text);
+  };
+
+  return (
+    <ExampleCard>
+      <Text style={styles.description}>
+        Editable picker - type to filter or enter custom text
+      </Text>
+      <View style={styles.pickerContainer}>
+        <RNCPicker
+          items={items}
+          selectedIndex={selectedIndex}
+          editable={true}
+          text={text}
+          placeholder="Type or select a fruit..."
+          onPickerSelect={handleChange}
+          style={styles.picker}
+          accessibilityLabel="Editable Fruit Picker"
+        />
+      </View>
+      <View style={styles.resultBox}>
+        <Text style={styles.resultLabel}>Text:</Text>
+        <Text style={styles.resultValue}>{text || '(empty)'}</Text>
+      </View>
+      <View style={styles.resultBox}>
+        <Text style={styles.resultLabel}>Selected Index:</Text>
+        <Text style={styles.resultValue}>{selectedIndex}</Text>
+      </View>
+    </ExampleCard>
+  );
+}
+
+// Example 5: Color Picker
 function ColorPickerExample() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const items: RNCPickerItem[] = [
@@ -158,7 +203,7 @@ function ColorPickerExample() {
   );
 }
 
-// Example 5: Multiple Pickers in a Form
+// Example 6: Multiple Pickers in a Form
 function FormPickerExample() {
   const [countryIndex, setCountryIndex] = React.useState(0);
   const [categoryIndex, setCategoryIndex] = React.useState(-1);
@@ -224,7 +269,7 @@ function FormPickerExample() {
   );
 }
 
-// Example 5: Picker with Many Items
+// Example 7: Picker with Many Items
 function ManyItemsPickerExample() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const items: RNCPickerItem[] = Array.from({length: 50}, (_, i) => ({
@@ -253,74 +298,7 @@ function ManyItemsPickerExample() {
   );
 }
 
-// Example 6: TurboModule Test
-function TurboModuleTestExample() {
-  const [result, setResult] = React.useState<number | null>(null);
-  const [aIndex, setAIndex] = React.useState(2);
-  const [bIndex, setBIndex] = React.useState(4);
-
-  const numberItems: RNCPickerItem[] = Array.from({length: 10}, (_, i) => ({
-    label: `${i + 1}`,
-    value: `${i + 1}`,
-  }));
-
-  const handleMultiply = () => {
-    try {
-      const a = aIndex + 1;
-      const b = bIndex + 1;
-      const res = multiply(a, b);
-      setResult(res);
-    } catch (error) {
-      console.error('Error calling multiply:', error);
-    }
-  };
-
-  return (
-    <ExampleCard>
-      <Text style={styles.description}>
-        Test TurboModule: multiply(a, b)
-      </Text>
-
-      <View style={styles.calculatorRow}>
-        <View style={styles.numberPickerWrapper}>
-          <Text style={styles.calcLabel}>A</Text>
-          <RNCPicker
-            items={numberItems}
-            selectedIndex={aIndex}
-            onPickerSelect={(e: {nativeEvent: RNCPickerChangeEvent}) =>
-              setAIndex(e.nativeEvent.itemIndex)
-            }
-            style={styles.numberPicker}
-          />
-        </View>
-
-        <Text style={styles.operatorText}>x</Text>
-
-        <View style={styles.numberPickerWrapper}>
-          <Text style={styles.calcLabel}>B</Text>
-          <RNCPicker
-            items={numberItems}
-            selectedIndex={bIndex}
-            onPickerSelect={(e: {nativeEvent: RNCPickerChangeEvent}) =>
-              setBIndex(e.nativeEvent.itemIndex)
-            }
-            style={styles.numberPicker}
-          />
-        </View>
-
-        <Text style={styles.operatorText}>=</Text>
-
-        <View style={styles.resultDisplay}>
-          <Text style={styles.resultNumber}>{result ?? '?'}</Text>
-        </View>
-      </View>
-
-      <Button title="Calculate" onPress={handleMultiply} />
-    </ExampleCard>
-  );
-}
-
-// Example 7: Dynamic Items
+// Example 8: Dynamic Items
 function DynamicItemsPickerExample() {
   const INITIAL_ITEMS: RNCPickerItem[] = [
     { label: 'Apple', value: 'apple' },
@@ -705,6 +683,10 @@ export const examples = [
     render: DisabledPickerExample,
   },
   {
+    title: 'Editable Picker',
+    render: EditablePickerExample,
+  },
+  {
     title: 'Color Picker',
     render: ColorPickerExample,
   },
@@ -715,10 +697,6 @@ export const examples = [
   {
     title: 'Many Items (50)',
     render: ManyItemsPickerExample,
-  },
-  {
-    title: 'TurboModule: multiply()',
-    render: TurboModuleTestExample,
   },
   {
     title: 'Dynamic Items',

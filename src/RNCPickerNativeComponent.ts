@@ -29,7 +29,7 @@ export type RNCPickerItem = Readonly<{
   value?: string;
   
   /**
-   * Text color for this item (processed color as Int32).
+   * Text color for this item.
    */
   textColor?: ColorValue;
   
@@ -37,12 +37,6 @@ export type RNCPickerItem = Readonly<{
    * Used to locate the item in end-to-end tests.
    */
   testID?: string;
-  
-  /**
-   * If set to false, the specific item will be disabled.
-   * @default true
-   */
-  enabled?: boolean;
 }>;
 
 /**
@@ -90,6 +84,19 @@ export interface RNCPickerProps extends ViewProps {
    * Placeholder string displayed when no item is selected.
    */
   placeholder?: string;
+  
+  /**
+   * If set to true, the picker will be editable (allows text input).
+   * @platform windows
+   * @default false
+   */
+  editable?: WithDefault<boolean, false>;
+  
+  /**
+   * The text value when the picker is in editable mode.
+   * @platform windows
+   */
+  text?: string;
   
   /**
    * Used to locate this view in end-to-end tests.
