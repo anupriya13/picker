@@ -141,8 +141,9 @@ void RNCPickerComponentView::UpdateProps(
     }
   }
 
-  // Update items only if changed
-  if (!oldProps || oldProps->items != newProps->items) {
+  // Update items if changed, OR if editable state changed (since item format differs)
+  const bool editableChanged = !oldProps || oldProps->editable != newProps->editable;
+  if (editableChanged || !oldProps || oldProps->items != newProps->items) {
     m_comboBox.Items().Clear();
     m_items.clear();
 
@@ -150,16 +151,21 @@ void RNCPickerComponentView::UpdateProps(
       // Store item data
       m_items.push_back(item);
 
-      // Create ComboBoxItem
-      auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
-      comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
+      // For editable ComboBox, add items as strings for proper autocomplete behavior
+      // For non-editable, use ComboBoxItem for testID support
+      if (newProps->editable) {
+        m_comboBox.Items().Append(winrt::box_value(winrt::to_hstring(item.label)));
+      } else {
+        auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
+        comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
 
-      // Set testID if provided
-      if (item.testID.has_value()) {
-        comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
+        // Set testID if provided
+        if (item.testID.has_value()) {
+          comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
+        }
+
+        m_comboBox.Items().Append(comboBoxItem);
       }
-
-      m_comboBox.Items().Append(comboBoxItem);
     }
   }
 
