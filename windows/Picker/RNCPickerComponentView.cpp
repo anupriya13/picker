@@ -156,7 +156,8 @@ void RNCPickerComponentView::UpdateProps(
       // For editable ComboBox, add items as strings for proper autocomplete behavior
       // For non-editable, use ComboBoxItem for testID support
       if (newProps->editable) {
-        m_comboBox.Items().Append(winrt::box_value(winrt::to_hstring(item.label)));
+        m_comboBox.Items()
+                  .Append(winrt::box_value(winrt::to_hstring(item.label)));
       } else {
         auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
         comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
