@@ -71,18 +71,12 @@ void RNCPickerComponentView::InitializeContentIsland(
   // Listen for selection changes
   m_selectionChangedRevoker = m_comboBox.SelectionChanged(
       winrt::auto_revoke, [this](const auto& /*sender*/, const auto& /*args*/) {
-        if (m_updating) {
-          return;
-        }
         EmitPickerSelectEvent();
       });
 
   // Listen for text submitted (when user presses Enter in editable mode)
   m_textSubmittedRevoker = m_comboBox.TextSubmitted(
       winrt::auto_revoke, [this](const auto& /*sender*/, const auto& /*args*/) {
-        if (m_updating) {
-          return;
-        }
         EmitPickerSelectEvent();
       });
 
@@ -120,74 +114,74 @@ void RNCPickerComponentView::UpdateProps(
     const winrt::com_ptr<PickerCodegen::RNCPickerProps>& oldProps) noexcept {
   BaseRNCPicker::UpdateProps(view, newProps, oldProps);
 
-  m_updating = true;
-
-  // Update enabled state only if changed
-  if (!oldProps || oldProps->enabled != newProps->enabled) {
-    m_comboBox.IsEnabled(newProps->enabled);
-  }
-
-  // Update editable state only if changed
-  if (!oldProps || oldProps->editable != newProps->editable) {
-    m_comboBox.IsEditable(newProps->editable);
-  }
-
-  // Update placeholder text only if changed
-  if (!oldProps || oldProps->placeholder != newProps->placeholder) {
-    if (newProps->placeholder.has_value()) {
-      m_comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));
-    } else {
-      m_comboBox.PlaceholderText(L"");
+  // Suspend event handlers during programmatic updates to avoid triggering
+  // change events. Using RAII ensures handlers are always re-attached.
+  WithEventsSuspended([&]() {
+    // Update enabled state only if changed
+    if (!oldProps || oldProps->enabled != newProps->enabled) {
+      m_comboBox.IsEnabled(newProps->enabled);
     }
-  }
 
-  // Update items if changed, OR if editable state changed (since item format differs)
-  const bool editableChanged = !oldProps || oldProps->editable != newProps->editable;
-  if (editableChanged || !oldProps || oldProps->items != newProps->items) {
-    m_comboBox.Items().Clear();
-    m_items.clear();
+    // Update editable state only if changed
+    if (!oldProps || oldProps->editable != newProps->editable) {
+      m_comboBox.IsEditable(newProps->editable);
+    }
 
-    for (const auto& item : newProps->items) {
-      // Store item data
-      m_items.push_back(item);
-
-      // For editable ComboBox, add items as strings for proper autocomplete behavior
-      // For non-editable, use ComboBoxItem for testID support
-      if (newProps->editable) {
-        m_comboBox.Items().Append(winrt::box_value(winrt::to_hstring(item.label)));
+    // Update placeholder text only if changed
+    if (!oldProps || oldProps->placeholder != newProps->placeholder) {
+      if (newProps->placeholder.has_value()) {
+        m_comboBox.PlaceholderText(winrt::to_hstring(newProps->placeholder.value()));
       } else {
-        auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
-        comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
-
-        // Set testID if provided
-        if (item.testID.has_value()) {
-          comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
-        }
-
-        m_comboBox.Items().Append(comboBoxItem);
+        m_comboBox.PlaceholderText(L"");
       }
     }
-  }
 
-  // Update selected index only if changed
-  if (!oldProps || oldProps->selectedIndex != newProps->selectedIndex) {
-    const int32_t selectedIndex = newProps->selectedIndex;
-    if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
-      m_comboBox.SelectedIndex(selectedIndex);
-    } else {
-      m_comboBox.SelectedIndex(-1);
+    // Update items if changed, OR if editable state changed (since item format differs)
+    const bool editableChanged = !oldProps || oldProps->editable != newProps->editable;
+    if (editableChanged || !oldProps || oldProps->items != newProps->items) {
+      m_comboBox.Items().Clear();
+      m_items.clear();
+
+      for (const auto& item : newProps->items) {
+        // Store item data
+        m_items.push_back(item);
+
+        // For editable ComboBox, add items as strings for proper autocomplete behavior
+        // For non-editable, use ComboBoxItem for testID support
+        if (newProps->editable) {
+          m_comboBox.Items().Append(winrt::box_value(winrt::to_hstring(item.label)));
+        } else {
+          auto comboBoxItem = winrt::Microsoft::UI::Xaml::Controls::ComboBoxItem();
+          comboBoxItem.Content(winrt::box_value(winrt::to_hstring(item.label)));
+
+          // Set testID if provided
+          if (item.testID.has_value()) {
+            comboBoxItem.Name(winrt::to_hstring(item.testID.value()));
+          }
+
+          m_comboBox.Items().Append(comboBoxItem);
+        }
+      }
     }
-  }
 
-  // Update text (for editable mode) only if changed
-  // Only set custom text when no item is selected (user typed custom text)
-  if (!oldProps || oldProps->text != newProps->text) {
-    if (newProps->editable && newProps->text.has_value() && newProps->selectedIndex < 0) {
-      m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
+    // Update selected index only if changed
+    if (!oldProps || oldProps->selectedIndex != newProps->selectedIndex) {
+      const int32_t selectedIndex = newProps->selectedIndex;
+      if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(m_comboBox.Items().Size())) {
+        m_comboBox.SelectedIndex(selectedIndex);
+      } else {
+        m_comboBox.SelectedIndex(-1);
+      }
     }
-  }
 
-  m_updating = false;
+    // Update text (for editable mode) only if changed
+    // Only set custom text when no item is selected (user typed custom text)
+    if (!oldProps || oldProps->text != newProps->text) {
+      if (newProps->editable && newProps->text.has_value() && newProps->selectedIndex < 0) {
+        m_comboBox.Text(winrt::to_hstring(newProps->text.value()));
+      }
+    }
+  });
 
   RefreshSize();
 }

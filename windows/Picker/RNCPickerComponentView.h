@@ -49,7 +49,25 @@ struct RNCPickerComponentView
   std::vector<PickerCodegen::RNCPickerSpec_RNCPickerProps_items> m_items;
   winrt::Microsoft::UI::Xaml::Controls::ComboBox::SelectionChanged_revoker m_selectionChangedRevoker;
   winrt::Microsoft::UI::Xaml::Controls::ComboBox::TextSubmitted_revoker m_textSubmittedRevoker;
-  bool m_updating{false};
+
+  // RAII helper to temporarily suspend event handlers during programmatic updates.
+  // This avoids triggering change events when we're setting values from props.
+  template<typename TAction>
+  void WithEventsSuspended(TAction action) {
+    m_selectionChangedRevoker.revoke();
+    m_textSubmittedRevoker.revoke();
+    
+    action();
+    
+    m_selectionChangedRevoker = m_comboBox.SelectionChanged(
+        winrt::auto_revoke, [this](const auto& /*sender*/, const auto& /*args*/) {
+          EmitPickerSelectEvent();
+        });
+    m_textSubmittedRevoker = m_comboBox.TextSubmitted(
+        winrt::auto_revoke, [this](const auto& /*sender*/, const auto& /*args*/) {
+          EmitPickerSelectEvent();
+        });
+  }
 };
 
 void RegisterRNCPickerComponentView(
