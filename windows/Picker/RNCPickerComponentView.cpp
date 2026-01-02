@@ -58,10 +58,12 @@ void RNCPickerComponentView::InitializeContentIsland(
   const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView) {
   // Create ComboBox for picker functionality
   m_comboBox = winrt::Microsoft::UI::Xaml::Controls::ComboBox();
-  m_comboBox.HorizontalAlignment(winrt::Microsoft::UI::Xaml::HorizontalAlignment::Stretch);
+  m_comboBox.HorizontalAlignment(
+    winrt::Microsoft::UI::Xaml::HorizontalAlignment::Stretch);
   
   // For editable ComboBox, trigger selection change always (not just on commit)
-  m_comboBox.SelectionChangedTrigger(winrt::Microsoft::UI::Xaml::Controls::ComboBoxSelectionChangedTrigger::Always);
+  m_comboBox.SelectionChangedTrigger(
+    winrt::Microsoft::UI::Xaml::Controls::ComboBoxSelectionChangedTrigger::Always);
 
   // Listen for size changes on the comboBox
   m_comboBox.SizeChanged([this](auto const& /*sender*/, auto const& /*args*/) {
