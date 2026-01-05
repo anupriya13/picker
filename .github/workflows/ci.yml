@@ -138,4 +138,29 @@ jobs:
       - name: Install Podfiles
         run: cd example/macos && npx pod-install
       - name: Build example app
-        run: yarn macos --no-packager 
+        run: yarn macos --no-packager
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Dependencies
+        run: yarn
+      - name: Build Windows Library
+        run: |
+          cd windows
+          MSBuild.exe ReactNativePicker.sln /p:Configuration=Release /p:Platform=x64 
