@@ -14,6 +14,10 @@ const defaultConfig = getDefaultConfig(__dirname);
 const config = {
   watchFolders: [root],
   resolver: {
+    // Ensure .ts and .tsx files are resolved (for Windows-specific TypeScript files)
+    sourceExts: [...defaultConfig.resolver.sourceExts, 'ts', 'tsx'],
+    // Add 'windows' to platform extensions so Metro resolves .windows.ts/.windows.js files
+    platforms: [...(defaultConfig.resolver.platforms || []), 'windows'],
     // Make sure Metro can resolve the picker package from the parent folder
     extraNodeModules: {
       '@react-native-picker/picker': root,

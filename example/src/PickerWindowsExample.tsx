@@ -5,7 +5,7 @@ import {
   RNCPicker,
   type RNCPickerItem,
   type RNCPickerChangeEvent,
-} from '@react-native-picker/picker/src';
+} from '@react-native-picker/picker';
 
 // Reusable Card component for examples
 function ExampleCard({children}: {children: React.ReactNode}) {

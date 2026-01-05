@@ -169,7 +169,7 @@
   "codegenConfig": {
     "name": "RNCPickerSpec",
     "type": "all",
-    "jsSrcsDir": "src",
+    "jsSrcsDir": "js",
     "android": {
       "javaPackageName": "com.reactnativecommunity.picker"
     },
