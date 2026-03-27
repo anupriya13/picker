@@ -78,7 +78,7 @@
     "react-native-macos": "^0.75",
     "react-native-test-app": "^4.0.4",
     "react-native-web": "^0.14.10",
-    "react-native-windows": "0.0.0-canary.1020",
+    "react-native-windows": "0.82.3",
     "react-test-renderer": "19.1.0",
     "rimraf": "^2.6.3",
     "semantic-release": "^19.0.3",
